@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: cart-db
+    restart: always
+    environment:
+      POSTGRES_USER: process.env.POSTGRESS_USER
+      POSTGRES_PASSWORD: process.env.POSTGRESS_PASSWORD
+      POSTGRES_DB: process.env.POSTGRESS_DB
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: cart-api
+    restart: always
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_URL: postgresql://${POSTGRESS_USER}:${POSTGRESS_PASSWORD}@db:5432/${POSTGRESS_DB}?schema=public
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
