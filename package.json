@@ -1,9 +1,16 @@
 {
-  "dependencies": {
-    "@prisma/client": "^7.5.0",
-    "dotenv": "^17.3.1"
-  },
-  "devDependencies": {
-    "prisma": "^6.12.0"
-  }
+    "dependencies": {
+        "@prisma/client": "^7.5.0",
+        "dotenv": "^17.3.1"
+    },
+    "scripts": {
+        "start:be": "cd be && npm run start:dev",
+        "start:fe": "cd fe && npm run dev",
+        "dev": "concurrently -n \"BE,FE\" -c \"cyan,magenta\" \"npm run start:be\" \"wait-on http://localhost:3000/api && npm run start:fe\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.2.1",
+        "prisma": "^6.12.0",
+        "wait-on": "^9.0.4"
+    }
 }
