@@ -19,10 +19,10 @@ model User {
   isAdmin   Boolean     @default(false)
   password  String
   IBAN     String
-  adress   String
+  address   String
   county   String
   city     String
-  zipCode  String
+  zipCode  Int
 
   favourites Favourite[]
   orders     Order[]

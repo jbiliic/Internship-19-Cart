@@ -6,18 +6,27 @@ import { UserDto } from './dto/user.dto';
 export class UserService {
     constructor(private readonly prisma: PrismaService) { }
 
-    getUserProfile(id: number) {
-        const userProfile = this.prisma.user.findFirst({
+    async getUserProfile(id: number) {
+        const userProfile = await this.prisma.user.findFirst({
             where: { id },
         });
         if (!userProfile) {
             throw new Error('User not found');
         }
-        return userProfile;
+        return {
+            id: userProfile.id,
+            email: userProfile.email,
+            name: userProfile.name,
+            IBAN: userProfile.IBAN,
+            address: userProfile.address,
+            county: userProfile.county,
+            city: userProfile.city,
+            zipCode: userProfile.zipCode
+        } as UserDto;
     }
 
-    editUserProfile(id: number, updateData: UserDto) {
-        const user = this.prisma.user.findFirst({
+    async editUserProfile(id: number, updateData: UserDto) {
+        const user = await this.prisma.user.findFirst({
             where: { id },
         });
 
@@ -25,7 +34,7 @@ export class UserService {
             throw new Error('User not found');
         }
 
-        return this.prisma.user.update({
+        return await this.prisma.user.update({
             where: { id },
             data: updateData,
         });

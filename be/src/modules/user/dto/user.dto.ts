@@ -32,5 +32,5 @@ export class UserDto {
     @ApiProperty({ example: '12345' })
     @IsNotEmpty()
     @IsNumber()
-    zipCode: string;
+    zipCode: number;
 }
