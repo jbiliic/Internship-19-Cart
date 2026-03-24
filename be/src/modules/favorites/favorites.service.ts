@@ -7,7 +7,7 @@ export class FavoritesService {
     constructor(private readonly prisma: PrismaService) { }
 
     async getFavorites(userId: number): Promise<ProductDto[]> {
-        const favorites = await this.prisma.favourite.findMany({
+        const favorites = await this.prisma.favorite.findMany({
             where: { userId },
             include: {
                 product: true,
@@ -20,13 +20,13 @@ export class FavoritesService {
             size: fav.product.size,
             color: fav.product.color,
             price: fav.product.price.toNumber(),
-            imageUrl: fav.product.imgURL,
+            imageURL: fav.product.imgURL,
         })) as ProductDto[];
     }
 
     async addFavorite(userId: number, productId: number) {
         try {
-            return await this.prisma.favourite.create({
+            return await this.prisma.favorite.create({
                 data: {
                     userId,
                     productId,
@@ -41,7 +41,7 @@ export class FavoritesService {
     }
 
     async removeFavorite(userId: number, productId: number) {
-        const deleted = await this.prisma.favourite.deleteMany({
+        const deleted = await this.prisma.favorite.deleteMany({
             where: {
                 userId,
                 productId,

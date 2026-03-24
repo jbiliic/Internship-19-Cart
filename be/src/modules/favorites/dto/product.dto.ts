@@ -13,7 +13,7 @@ export class ProductDto {
     @ApiProperty({ example: "M" })
     @IsNotEmpty()
     @IsString()
-    size: string;
+    size: string[];
 
     @ApiProperty({ example: "Red" })
     @IsNotEmpty()
@@ -28,5 +28,5 @@ export class ProductDto {
     @ApiProperty({ example: "https://example.com/image.jpg" })
     @IsNotEmpty()
     @IsUrl()
-    imageUrl: string;
+    imageURL: string;
 }

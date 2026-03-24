@@ -24,7 +24,7 @@ model User {
   city     String
   zipCode  Int
 
-  favourites Favourite[]
+  favorites favorite[]
   orders     Order[]
 
   createdAt DateTime    @default(now())
@@ -41,17 +41,27 @@ model Category {
   updatedAt DateTime    @updatedAt
 }
 
+enum Size {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+  ONE_SIZE
+}
+
 model Product {
   id        Int         @id @default(autoincrement())
   name      String      
   price     Decimal     @db.Decimal(10, 2)
   color     String
-  size      String
+  size      Size[]
   imgURL    String
 
   categories    ProductCategory[]
   orderItems    OrderProduct[]
-  favourites    Favourite[]
+  favorites    favorite[]
 
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
@@ -67,7 +77,7 @@ model ProductCategory {
   @@id([productId, categoryId])
 }
 
-model Favourite {
+model favorite {
   id        Int         @id @default(autoincrement())
 
   userId    Int
@@ -80,9 +90,18 @@ model Favourite {
   createdAt DateTime    @default(now())
 }
 
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
 model Order {
   id        Int         @id @default(autoincrement())
   userId    Int
+  status    OrderStatus @default(PENDING)
 
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   products  OrderProduct[]
@@ -96,6 +115,7 @@ model OrderProduct {
   productId Int
   quantity  Int         @default(1)
   price     Decimal     @db.Decimal(10, 2)
+  selectedSize Size
 
   order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
