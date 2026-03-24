@@ -1,19 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put, Req } from '@nestjs/common';
 import { UserService } from './user.service';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { use } from 'passport';
+import { UserGuard } from 'src/common/auth/guards/user.guard';
+import { UserDto } from './dto/user.dto';
+import { AuthenticatedUser } from 'src/common/auth/interfaces/authenticatedUser.interface';
 
+@ApiTags('User')
 @Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService) { }
 
-    @Post('/me')
-
-    create() {
-        return this.userService.create(createUserDto);
+    @Put('/me')
+    @UseGuards(UserGuard)
+    @ApiResponse({ status: 200, description: 'The user has been successfully edited' })
+    @ApiResponse({ status: 403, description: 'Forbidden.' })
+    editUserProfile(@Req() req: { user: AuthenticatedUser }, @Body() updateData: UserDto) {
+        const id = req.user.id;
+        return this.userService.editUserProfile(id, updateData);
     }
 
     @Get('/me')
-    findAll() {
-        return this.userService.findAll();
+    @UseGuards(UserGuard)
+    @ApiResponse({ status: 200, description: 'The user has been successfully retrieved' })
+    @ApiResponse({ status: 403, description: 'Forbidden.' })
+    getUserProfile(@Req() req: { user: AuthenticatedUser }) {
+        const id = req.user.id;
+        return this.userService.getUserProfile(id);
     }
 
 }
