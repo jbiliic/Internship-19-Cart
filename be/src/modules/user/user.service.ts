@@ -26,17 +26,31 @@ export class UserService {
     }
 
     async editUserProfile(id: number, updateData: UserDto) {
-        const user = await this.prisma.user.findFirst({
-            where: { id },
-        });
-
-        if (!user) {
+        try {
+            const updatedUser = await this.prisma.user.update({
+                where: { id },
+                data: {
+                    email: updateData.email,
+                    name: updateData.name,
+                    IBAN: updateData.IBAN,
+                    address: updateData.address,
+                    county: updateData.county,
+                    city: updateData.city,
+                    zipCode: updateData.zipCode
+                },
+            });
+            return {
+                id: updatedUser.id,
+                email: updatedUser.email,
+                name: updatedUser.name,
+                IBAN: updatedUser.IBAN,
+                address: updatedUser.address,
+                county: updatedUser.county,
+                city: updatedUser.city,
+                zipCode: updatedUser.zipCode
+            } as UserDto;
+        } catch (error) {
             throw new Error('User not found');
         }
-
-        return await this.prisma.user.update({
-            where: { id },
-            data: updateData,
-        });
     }
 }

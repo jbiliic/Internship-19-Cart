@@ -3,6 +3,7 @@ import { PrismaService } from 'src/common/prisma/prisma.service';
 import { OrderStatus, Product, Size } from '@prisma/client';
 import { OrderProductDto } from './dto/orderProduct.dto';
 import { OrderDto } from './dto/order.dto';
+import { ProductDto } from './dto/product.dto';
 
 @Injectable()
 export class OrdersService {
@@ -19,6 +20,9 @@ export class OrdersService {
                 },
             },
         });
+        if (orders.length === 0) {
+            throw new Error('No orders found for this user');
+        }
 
         return orders.map((order) => {
             const total = order.products.reduce((acc, op) => {
@@ -55,9 +59,14 @@ export class OrdersService {
         }
 
         const productIds = items.map((item) => item.productId);
-        const productsFromDb = await this.prisma.product.findMany({
-            where: { id: { in: productIds } },
-        });
+        try {
+            var productsFromDb = await this.prisma.product.findMany({
+                where: { id: { in: productIds } },
+            });
+        } catch (error) {
+            throw new Error('One or more products not found');
+
+        }
 
         const newOrder = await this.prisma.order.create({
             data: {
@@ -115,6 +124,9 @@ export class OrdersService {
                 },
             },
         });
+        if (orders.length === 0) {
+            throw new Error('No orders found');
+        }
 
         return orders.map((order) => {
             const total = order.products.reduce((acc, op) => {
