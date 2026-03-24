@@ -16,6 +16,13 @@ model User {
   id        Int         @id @default(autoincrement())
   email     String      @unique
   name      String
+  isAdmin   Boolean     @default(false)
+  password  String
+  IBAN     String
+  adress   String
+  county   String
+  city     String
+  zipCode  String
 
   favourites Favourite[]
   orders     Order[]
@@ -88,6 +95,7 @@ model OrderProduct {
   orderId   Int
   productId Int
   quantity  Int         @default(1)
+  price     Decimal     @db.Decimal(10, 2)
 
   order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
