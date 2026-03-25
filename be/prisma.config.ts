@@ -11,6 +11,7 @@ export default defineConfig({
     schema: "src/config/prisma/schema.prisma",
     migrations: {
         path: "src/config/prisma/migrations",
+        seed: "tsx src/config/prisma/seed.ts",
     },
     // This is where Migrate 7 looks for the connection now:
     datasource: {

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { LogInDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt/dist/jwt.service';
@@ -16,7 +16,7 @@ export class AuthService {
         });
 
         if (!user) {
-            throw new Error('Invalid email or password');
+            throw new BadRequestException('Invalid email or password');
         }
         const isPasswordMatching = await bcrypt.compare(object.password, user.password);
 
@@ -42,7 +42,7 @@ export class AuthService {
         });
 
         if (existingUser) {
-            throw new Error('Email already in use');
+            throw new BadRequestException('Email already in use');
         }
 
         const hashedPassword = await bcrypt.hash(object.password, 10);
