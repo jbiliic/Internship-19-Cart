@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDecimal, IsNotEmpty, IsString, IsUrl, isURL } from "class-validator";
+import { Size } from "@prisma/client";
+import { IsDecimal, IsEnum, IsNotEmpty, IsString, IsUrl, isURL } from "class-validator";
 
 export class ProductDto {
     @ApiProperty({ example: 1 })
@@ -12,8 +13,8 @@ export class ProductDto {
 
     @ApiProperty({ example: "M" })
     @IsNotEmpty()
-    @IsString()
-    size: string[];
+    @IsEnum(Size, { each: true })
+    size: Size[];
 
     @ApiProperty({ example: "Red" })
     @IsNotEmpty()

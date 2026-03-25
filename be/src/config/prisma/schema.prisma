@@ -58,6 +58,7 @@ model Product {
   color     String
   size      Size[]
   imgURL    String
+  inStock   Boolean     @default(true)
 
   categories    ProductCategory[]
   orderItems    OrderProduct[]

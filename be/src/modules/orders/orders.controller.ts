@@ -7,6 +7,7 @@ import { OrderProductDto } from './dto/orderProduct.dto';
 import { UserGuard } from 'src/common/auth/guards/user.guard';
 import { AdminGuard } from 'src/common/auth/guards/admin.guard';
 import { OrderDto } from './dto/order.dto';
+import { UpdateOrderStatusDto } from './dto/updateOrderStatus.dto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -53,13 +54,13 @@ export class OrdersController {
     @Patch(':id/status')
     @UseGuards(UserGuard, AdminGuard)
     @ApiOkResponse({
-        description: 'The order status has been successfully changed.'
+        description: 'The order status has been successfully changed.',
     })
     changeOrderStatus(
         @Param('id', ParseIntPipe) id: number,
-        @Body('status') status: OrderStatus
+        @Body() statusDto: UpdateOrderStatusDto
     ) {
-        return this.ordersService.changeOrderStatus(id, status);
+        return this.ordersService.changeOrderStatus(id, statusDto.status);
     }
 
 
