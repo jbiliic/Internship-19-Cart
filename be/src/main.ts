@@ -5,11 +5,17 @@ import { ValidationPipe } from '@nestjs/common/pipes/validation.pipe';
 import { AllExceptionsFilter } from './common/filters/exception.filter';
 import { SwaggerModule } from '@nestjs/swagger/dist/swagger-module';
 import { DocumentBuilder } from '@nestjs/swagger/dist/document-builder';
+import helmet from 'helmet';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-    app.enableCors();
+    app.enableCors({
+        origin: process.env.CORS_ORIGIN?.split(',') ?? '*',
+        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        credentials: true,
+    });
 
+    app.use(helmet())
     app.useGlobalPipes(new ValidationPipe({
         whitelist: true,
         transform: true,
