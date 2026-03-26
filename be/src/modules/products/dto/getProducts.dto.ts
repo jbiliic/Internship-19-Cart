@@ -20,7 +20,7 @@ export enum SortOrder {
     DESC = 'desc'
 }
 
-export class GetProductsDto {
+export class GetProductsQueryDto {
     @ApiPropertyOptional({ example: 1 })
     @IsOptional()
     @Type(() => Number)
@@ -57,9 +57,30 @@ export class GetProductsDto {
     @IsEnum(SortOrder)
     sortOrder?: SortOrder = SortOrder.ASC;
 
-    @ApiPropertyOptional({ example: true })
+    @ApiPropertyOptional({ example: true, type: Boolean })
     @IsOptional()
-    @Transform(({ value }) => value === 'true' || value === true)
+    @Transform(({ value }) => {
+        if (typeof value === 'string') {
+            const normalized = value.trim().toLowerCase();
+            if (normalized === 'true') return true;
+            if (normalized === 'false') return false;
+        }
+        return value;
+    })
     @IsBoolean()
     inStock?: boolean;
+
+    @ApiPropertyOptional({ example: 1 })
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    @IsPositive()
+    page?: number;
+
+    @ApiPropertyOptional({ example: 20 })
+    @IsOptional()
+    @Type(() => Number)
+    @IsNumber()
+    @IsPositive()
+    limit?: number;
 }

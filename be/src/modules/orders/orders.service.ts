@@ -118,8 +118,12 @@ export class OrdersService {
         };
     }
 
-    async getAllOrders(): Promise<OrderDto[]> {
+    async getAllOrders(status?: OrderStatus, id?: number): Promise<OrderDto[]> {
         const orders = await this.prisma.order.findMany({
+            where: {
+                status,
+                id
+            },
             include: {
                 products: {
                     include: {

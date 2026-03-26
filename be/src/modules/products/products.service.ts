@@ -1,45 +1,76 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma/prisma.service';
-import { GetProductsDto } from './dto/getProducts.dto';
+import { GetProductsQueryDto } from './dto/getProducts.dto';
 import { ProductDto } from './dto/product.dto';
 import { SingleProductDto } from './dto/singleProduct.dto';
 import { CreateProductDto } from './dto/createProduct.dto';
+import { PaginatedProductsDto } from './dto/paginatedProduct.dto';
 
 @Injectable()
 export class ProductsService {
     constructor(private readonly prisma: PrismaService) { }
 
-    async getProducts(getProductsDto: GetProductsDto): Promise<ProductDto[]> {
-        const { categoryId, minPrice, maxPrice, search, sortBy, sortOrder, inStock } = getProductsDto;
-        const products = await this.prisma.product.findMany({
-            where: {
-                categories: categoryId ? { some: { categoryId } } : undefined,
-                price: {
-                    gte: minPrice ?? undefined,
-                    lte: maxPrice ?? undefined,
-                },
-                name: search ? { contains: search, mode: 'insensitive' } : undefined,
-                inStock: inStock !== undefined ? inStock : undefined,
-            },
-            include: {
-                categories: {
-                    select: {
-                        categoryId: true,
-                    },
-                },
-            },
-            orderBy: sortBy ? { [sortBy]: sortOrder || 'asc' } : undefined,
-        });
+    async getProducts(getProductsDto: GetProductsQueryDto): Promise<PaginatedProductsDto> {
+        const {
+            categoryId, minPrice, maxPrice, search,
+            sortBy, sortOrder, inStock,
+            page = 1, limit = 10
+        } = getProductsDto;
 
-        return products.map(p => ({
-            id: p.id,
-            name: p.name,
-            price: p.price.toNumber(),
-            color: p.color,
-            imgURL: p.imgURL,
-            inStock: p.inStock,
-            categoryIds: p.categories.map(c => c.categoryId),
-        })) as ProductDto[];
+        if (minPrice !== undefined && maxPrice !== undefined && minPrice > maxPrice) {
+            throw new BadRequestException('minPrice cannot be greater than maxPrice');
+        }
+        if (categoryId !== undefined) {
+            const categoryExists = await this.prisma.category.findUnique({
+                where: { id: categoryId },
+            });
+            if (!categoryExists) {
+                throw new BadRequestException('Category not found');
+            }
+        }
+        const where: any = {
+            categories: categoryId ? { some: { categoryId } } : undefined,
+            price: {
+                gte: minPrice ?? undefined,
+                lte: maxPrice ?? undefined,
+            },
+            name: search ? { contains: search, mode: 'insensitive' } : undefined,
+            inStock: inStock ?? undefined,
+        };
+
+        const [total, products] = await Promise.all([
+            this.prisma.product.count({ where }),
+            this.prisma.product.findMany({
+                where,
+                include: {
+                    categories: { select: { categoryId: true } },
+                },
+                orderBy: sortBy ? { [sortBy]: sortOrder || 'asc' } : { createdAt: 'desc' },
+                skip: (page - 1) * limit,
+                take: Number(limit),
+            }),
+        ]);
+
+        const hasNextPage = total > page * limit;
+        const hasPreviousPage = page > 1;
+
+        return {
+            total,
+            page: Number(page),
+            limit: Number(limit),
+            hasNextPage,
+            hasPreviousPage,
+            data: products.map(p => ({
+                id: p.id,
+                name: p.name,
+                price: p.price.toNumber(),
+                color: p.color,
+                imgURL: p.imgURL,
+                inStock: p.inStock,
+                sizes: p.size,
+                categoryIds: p.categories.map(c => c.categoryId),
+            })) as ProductDto[],
+        };
     }
 
     async getProductById(id: number): Promise<SingleProductDto> {

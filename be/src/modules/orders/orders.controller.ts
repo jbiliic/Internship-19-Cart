@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ParseIntPipe, Query } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { type AuthenticatedUser } from 'src/common/auth/interfaces/authenticatedUser.interface';
 import { OrderStatus, Size } from '@prisma/client';
 import { OrderProductDto } from './dto/orderProduct.dto';
@@ -43,14 +43,19 @@ export class OrdersController {
     }
 
     @Get()
-    @UseGuards(UserGuard, AdminGuard)
     @ApiOkResponse({
         description: 'The orders have been successfully retrieved.',
         type: OrderDto,
         isArray: true,
     })
-    getAllOrders() {
-        return this.ordersService.getAllOrders();
+    @ApiQuery({ name: 'status', required: false, enum: OrderStatus })
+    @ApiQuery({ name: 'id', required: false, type: Number })
+    @UseGuards(UserGuard, AdminGuard)
+    getAllOrders(
+        @Query('status') status?: OrderStatus,
+        @Query('id', new ParseIntPipe({ optional: true })) id?: number
+    ) {
+        return this.ordersService.getAllOrders(status, id);
     }
 
     @Patch(':id/status')

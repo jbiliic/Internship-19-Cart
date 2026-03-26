@@ -15,11 +15,11 @@ async function bootstrap() {
         credentials: true,
     });
 
-    app.use(helmet())
+    app.use(helmet());
     app.useGlobalPipes(new ValidationPipe({
         whitelist: true,
         transform: true,
-        transformOptions: { enableImplicitConversion: true },
+        transformOptions: { enableImplicitConversion: false },
     }));
     app.useGlobalInterceptors(new ResponseInterceptor());
     app.useGlobalFilters(new AllExceptionsFilter());

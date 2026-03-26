@@ -10,9 +10,15 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { ProductsModule } from './modules/products/products.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { ContentTypeMiddleware } from './common/middleware/content-type.middleware';
 
 @Module({
     imports: [ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot([{
+        ttl: 60,
+        limit: 10,
+    }]),
         PrismaModule,
         UserModule,
         FavoritesModule,
@@ -22,12 +28,17 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
         ProductsModule
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [AppService,
+        {
+            provide: 'APP_GUARD',
+            useClass: ThrottlerModule,
+        }
+    ],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
-            .apply(LoggerMiddleware)
+            .apply(LoggerMiddleware, ContentTypeMiddleware)
             .forRoutes({
                 path: '*',
                 method: RequestMethod.ALL

@@ -1,10 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { GetProductsDto } from './dto/getProducts.dto';
+import { GetProductsQueryDto } from './dto/getProducts.dto';
 import { CreateProductDto } from './dto/createProduct.dto';
 import { ProductDto } from './dto/product.dto';
 import { SingleProductDto } from './dto/singleProduct.dto';
+import { PaginatedProductsDto } from './dto/paginatedProduct.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -14,10 +15,9 @@ export class ProductsController {
     @Get()
     @ApiOkResponse({
         description: 'List of products',
-        type: ProductDto,
-        isArray: true,
+        type: PaginatedProductsDto,
     })
-    getAllProducts(@Query() query: GetProductsDto) {
+    getAllProducts(@Query() query: GetProductsQueryDto) {
         return this.productsService.getProducts(query);
     }
 
