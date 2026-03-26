@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { type AuthenticatedUser } from 'src/common/auth/interfaces/authenticatedUser.interface';
 import { OrderStatus, Size } from '@prisma/client';
 import { OrderProductDto } from './dto/orderProduct.dto';
@@ -31,13 +31,15 @@ export class OrdersController {
     @ApiOkResponse({
         description: 'The order has been successfully created.'
     })
+    @ApiBody({ type: [OrderProductDto] })
     @UseGuards(UserGuard)
     createOrder(
-        @Req() req: AuthenticatedUser,
-        @Body() body: { items: OrderProductDto[] }
+        @Req() req: { user: AuthenticatedUser },
+        @Body() body: OrderProductDto[]
     ) {
-        const userId = req.id;
-        return this.ordersService.createOrder(userId, body.items);
+        const userId = req.user.id;
+        console.log('Creating order for user ID:', userId);
+        return this.ordersService.createOrder(userId, body);
     }
 
     @Get()

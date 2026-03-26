@@ -32,4 +32,9 @@ export class ProductDto {
     @IsNotEmpty()
     @IsEnum(Size)
     size: Size;
+
+    @ApiProperty({ example: 1 })
+    @IsNotEmpty()
+    @IsNumber()
+    quantity: number;
 }

@@ -4,6 +4,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CategoryDto } from './dto/category.dto';
 import { UserGuard } from 'src/common/auth/guards/user.guard';
 import { AdminGuard } from 'src/common/auth/guards/admin.guard';
+import { CreateCategoryDto } from './dto/createCategory.dto';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -27,8 +28,8 @@ export class CategoriesController {
         type: CategoryDto,
     })
     @UseGuards(UserGuard, AdminGuard)
-    createCategory(@Body('name') name: string) {
-        return this.categoriesService.createCategory(name);
+    createCategory(@Body() dto: CreateCategoryDto) {
+        return this.categoriesService.createCategory(dto);
     }
 
     @Delete('/:id')

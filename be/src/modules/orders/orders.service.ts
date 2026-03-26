@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { OrderStatus, Product, Size } from '@prisma/client';
 import { OrderProductDto } from './dto/orderProduct.dto';
 import { OrderDto } from './dto/order.dto';
 import { ProductDto } from './dto/product.dto';
+import { stat } from 'fs';
 
 @Injectable()
 export class OrdersService {
@@ -46,26 +47,36 @@ export class OrdersService {
         });
     }
 
-    async createOrder(
-        userId: number,
-        items: OrderProductDto[]
-    ): Promise<OrderDto> {
-        if (items.length === 0) {
-            throw new Error('Order must contain at least one item');
-        }
+    async createOrder(userId: number, items: OrderProductDto[]): Promise<OrderDto> {
+        if (items.length === 0) throw new BadRequestException('Order must be at least one item');
+        if (items.some(item => item.quantity <= 0)) throw new BadRequestException('Quantity must be > 0');
 
-        if (items.some(item => item.quantity <= 0)) {
-            throw new Error('Quantity must be greater than zero');
-        }
+        const productIds = items.map(item => item.productId);
+        const productsFromDb = await this.prisma.product.findMany({
+            where: { id: { in: productIds } },
+        });
 
-        const productIds = items.map((item) => item.productId);
-        try {
-            var productsFromDb = await this.prisma.product.findMany({
-                where: { id: { in: productIds } },
-            });
-        } catch (error) {
-            throw new Error('One or more products not found');
+        items = items.reduce((acc, item) => {
+            const existing = acc.find(i => i.productId === item.productId && i.selectedSize === item.selectedSize);
+            if (existing) {
+                existing.quantity += item.quantity;
+            } else {
+                acc.push({ ...item });
+            }
+            return acc;
+        }, [] as OrderProductDto[]);
 
+        for (const item of items) {
+            const product = productsFromDb.find(p => p.id === item.productId);
+
+            if (!product) {
+                throw new NotFoundException(`Product ID ${item.productId} not found`);
+            }
+            if (!product.size.includes(item.selectedSize)) {
+                throw new BadRequestException(
+                    `Size ${item.selectedSize} is not available for ${product.name}`
+                );
+            }
         }
 
         const newOrder = await this.prisma.order.create({
@@ -73,26 +84,18 @@ export class OrdersService {
                 userId,
                 products: {
                     create: items.map((item) => {
-                        const product = productsFromDb.find((p) => p.id === item.productId);
-                        if (!product) {
-                            throw new Error(`Product with ID ${item.productId} not found`);
-                        }
-
+                        const product = productsFromDb.find(p => p.id === item.productId);
                         return {
                             productId: item.productId,
                             quantity: item.quantity,
-                            price: product.price,
-                            selectedSize: item.selectedSize as Size,
+                            price: product!.price,
+                            selectedSize: item.selectedSize,
                         };
                     }),
                 },
             },
             include: {
-                products: {
-                    include: {
-                        product: true,
-                    },
-                },
+                products: { include: { product: true } },
             },
         });
 
@@ -103,13 +106,14 @@ export class OrdersService {
         return {
             id: newOrder.id,
             totalPrice: Number(total.toFixed(2)),
-            products: newOrder.products.map((op) => ({
+            products: newOrder.products.map(op => ({
                 id: op.product.id,
                 name: op.product.name,
                 imgURL: op.product.imgURL,
                 price: op.price.toNumber(),
                 color: op.product.color,
                 size: op.selectedSize,
+                quantity: op.quantity,
             })),
         };
     }
@@ -136,6 +140,7 @@ export class OrdersService {
             return {
                 id: order.id,
                 totalPrice: Number(total.toFixed(2)),
+                status: order.status,
                 products: order.products.map((op) => ({
                     id: op.product.id,
                     name: op.product.name,
@@ -143,6 +148,7 @@ export class OrdersService {
                     price: op.price.toNumber(),
                     color: op.product.color,
                     size: op.selectedSize,
+                    quantity: op.quantity,
                 })),
             };
         });

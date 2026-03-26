@@ -9,7 +9,8 @@ import {
     IsInt,
     Min,
     IsNotEmpty,
-    MinLength
+    MinLength,
+    ArrayNotEmpty
 } from "class-validator";
 import { Size } from "@prisma/client";
 import { Type, Transform } from "class-transformer";
@@ -49,6 +50,7 @@ export class CreateProductDto {
     @IsArray()
     @IsInt({ each: true })
     @Type(() => Number)
+    @ArrayNotEmpty({ message: 'Category IDs array cannot be empty' })
     categoryIds: number[];
 
     @ApiProperty({
@@ -56,7 +58,8 @@ export class CreateProductDto {
         isArray: true,
         example: [Size.L, Size.XL]
     })
-    @IsArray()
+    @ArrayNotEmpty({ message: 'Sizes array cannot be empty' })
+    @IsNotEmpty({ each: true })
     @IsEnum(Size, { each: true })
     sizes: Size[];
 }
