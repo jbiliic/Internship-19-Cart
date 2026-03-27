@@ -61,7 +61,7 @@ export const RegisterCard = ({ onToggle }: RegisterCardProps) => {
     }
     if (data) {
       alert("Registration successful! Please login.");
-      navigate("/login");
+      onToggle();
     }
   };
   return (

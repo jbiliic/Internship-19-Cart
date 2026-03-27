@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import styles from "./SplashScreen.module.css";
-
+import logo1 from "../../assets/splashScreenLogos/logo1.jpg";
+import logo2 from "../../assets/splashScreenLogos/logo2.jpg";
+import logo3 from "../../assets/splashScreenLogos/logo3.jpg";
+import brand from "../../assets/splashScreenLogos/brand.jpg";
 interface SplashScreenProps {
   onFinished: () => void;
 }
@@ -27,18 +30,18 @@ export const SplashScreen = ({ onFinished }: SplashScreenProps) => {
       clearTimeout(t3);
       clearTimeout(t4);
     };
-  }, [step, onFinished]);
+  }, [onFinished]);
 
   return (
     <div className={styles.overlay}>
       <div className={styles.container}>
         <img
-          src="../../assets/splashScreenLogos/logo1.png"
+          src={logo1}
           className={`${styles.logoBase} ${step === 0 ? styles.visible : styles.hidden}`}
           alt="Logo 1"
         />
         <img
-          src="../../assets/splashScreenLogos/logo2.png"
+          src={logo2}
           className={`${styles.logoBase} ${step === 1 ? styles.visible : styles.hidden}`}
           alt="Logo 2"
         />
@@ -47,12 +50,12 @@ export const SplashScreen = ({ onFinished }: SplashScreenProps) => {
           className={`${styles.brandWrapper} ${step === 2 ? styles.visible : styles.hidden}`}
         >
           <img
-            src="../../assets/splashScreenLogos/logo3.png"
+            src={logo3}
             className={`${styles.logoIcon} ${isMoving ? styles.slideLeft : ""}`}
             alt="Logo 3"
           />
           <img
-            src="../../assets/splashScreenLogos/brand.png"
+            src={brand}
             className={`${styles.brandImage} ${isMoving ? styles.reveal : styles.hiddenImg}`}
             alt="Brand Name"
           />

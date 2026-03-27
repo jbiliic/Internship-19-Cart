@@ -30,21 +30,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
     setIsAdmin(false);
     setIsLoading(false);
   }, []);
 
   const login = (token: string, adminStatus: boolean) => {
-    localStorage.setItem("token", token);
+    localStorage.setItem("accessToken", token);
     setIsLoggedIn(true);
     setIsAdmin(adminStatus);
   };
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("accessToken");
 
       if (!token) {
         setIsLoading(false);
@@ -59,13 +59,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn(true);
         setIsAdmin(data.isAdmin);
         if (data.token) {
-          localStorage.setItem("token", data.token);
+          localStorage.setItem("accessToken", data.token);
         }
       }
 
       setIsLoading(false);
     };
-
     initializeAuth();
   }, [logout]);
 

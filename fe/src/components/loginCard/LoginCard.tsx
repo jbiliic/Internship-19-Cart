@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import client from "../../api/client";
 import styles from "./LoginCard.module.css";
 import type { LoginResponse } from "../../types/auth/loginResponse.dto";
+import { routes } from "../../constants/routes";
+import { useAuth } from "../../providers/auth/useAuth";
 
 interface LoginCardProps {
   onToggle: () => void;
@@ -15,6 +17,8 @@ export const LoginCard = ({ onToggle }: LoginCardProps) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const { isLoggedIn, isAdmin, isLoading, login, logout } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,8 +41,9 @@ export const LoginCard = ({ onToggle }: LoginCardProps) => {
     }
 
     if (data) {
-      localStorage.setItem("accessToken", data.accessToken);
-      navigate("/dashboard");
+      login(data.accessToken, data.isAdmin);
+      alert("Login successful!");
+      navigate(routes.HOME);
     }
   };
 

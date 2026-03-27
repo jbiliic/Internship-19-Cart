@@ -39,11 +39,13 @@ export class AuthController {
 
     @Get('/validate')
     @ApiOkResponse({ type: ValidateTokenDto })
-    async validateToken(@Headers('authorization') authHeader: string) {
+    async validateToken(@Headers('Authorization') authHeader: string) {
         if (!authHeader) {
             throw new UnauthorizedException('No token provided');
         }
+        console.log('Received token:', authHeader);
         const token = authHeader.split(' ')[1];
+        console.log('Extracted token:', token);
 
         if (!token) {
             throw new UnauthorizedException('Invalid token format');

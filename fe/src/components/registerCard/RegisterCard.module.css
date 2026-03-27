@@ -1,0 +1,116 @@
+.page {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--spacing-lg) var(--spacing-md);
+  background-color: var(--color-background-muted);
+}
+
+.registerContainer {
+  width: 100%;
+  max-width: 450px;
+  background-color: var(--color-background);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.header {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.header h1 {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-main);
+  font-weight: 700;
+}
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.row .inputGroup {
+  flex: 1;
+  min-width: 0;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-md);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.inputGroup label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.inputGroup input {
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-md);
+  outline: none;
+}
+
+.inputGroup input:focus {
+  border-color: var(--color-secondary);
+}
+
+.loginLink {
+  font-size: var(--font-size-sm);
+  text-align: center;
+  cursor: pointer;
+  color: var(--color-text-muted);
+}
+
+.blueText {
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+
+.errorBox {
+  color: var(--color-price-red);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-price-red);
+  border-radius: var(--border-radius-sm);
+}
+
+.submitBtn {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+}
+@media (max-width: 480px) {
+  .row {
+    gap: var(--spacing-sm);
+  }
+}
