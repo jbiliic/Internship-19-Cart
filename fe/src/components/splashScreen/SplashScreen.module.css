@@ -1,0 +1,70 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoBase {
+  position: absolute;
+  width: 60px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.brandWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.logoIcon {
+  width: 60px;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 2;
+}
+
+.brandImage {
+  height: 40px;
+  width: auto;
+  opacity: 0;
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+  transform: translateX(-10px);
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hiddenImg {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.visible {
+  opacity: 1;
+}
+
+.slideLeft {
+  transform: translateX(-60px);
+}
+
+.reveal {
+  opacity: 1;
+  transform: translateX(10px);
+  margin-left: 10px;
+}
