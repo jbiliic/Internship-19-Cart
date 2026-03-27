@@ -10,13 +10,14 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { ProductsModule } from './modules/products/products.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ContentTypeMiddleware } from './common/middleware/content-type.middleware';
 
 @Module({
     imports: [ConfigModule.forRoot({ isGlobal: true }),
     ThrottlerModule.forRoot([{
-        ttl: 60,
+        name: 'default',
+        ttl: 60000,
         limit: 10,
     }]),
         PrismaModule,
@@ -31,7 +32,7 @@ import { ContentTypeMiddleware } from './common/middleware/content-type.middlewa
     providers: [AppService,
         {
             provide: 'APP_GUARD',
-            useClass: ThrottlerModule,
+            useClass: ThrottlerGuard,
         }
     ],
 })
