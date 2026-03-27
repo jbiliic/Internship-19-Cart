@@ -71,4 +71,33 @@ export class AuthService {
             zipCode: newUser.zipCode,
         };
     }
+
+    async validateAndRefreshToken(token: string) {
+        try {
+            const decoded = this.jwtService.verify(token);
+            const user = await this.prisma.user.findUnique({ where: { id: decoded.id } });
+            if (!user) {
+                throw new UnauthorizedException('User not found');
+            }
+            const currentTime = Math.floor(Date.now() / 1000);
+            const timeUntilExpiration = decoded.exp - currentTime;
+
+            let newToken: string | undefined = undefined;
+
+            if (timeUntilExpiration < 600) {
+                const payload = {
+                    id: user.id,
+                    isAdmin: user.isAdmin,
+                };
+                newToken = this.jwtService.sign(payload);
+            }
+            return {
+                isAdmin: user.isAdmin,
+                ...(newToken && { token: newToken }),
+            };
+
+        } catch (error) {
+            throw new UnauthorizedException('Invalid or expired token');
+        }
+    }
 }
