@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   useState,
   useEffect,
@@ -30,21 +30,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("access_token");
     setIsLoggedIn(false);
     setIsAdmin(false);
     setIsLoading(false);
   }, []);
 
   const login = (token: string, adminStatus: boolean) => {
-    localStorage.setItem("accessToken", token);
+    localStorage.setItem("access_token", token);
     setIsLoggedIn(true);
     setIsAdmin(adminStatus);
   };
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem("access_token");
 
       if (!token) {
         setIsLoading(false);
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoggedIn(true);
         setIsAdmin(data.isAdmin);
         if (data.token) {
-          localStorage.setItem("accessToken", data.token);
+          localStorage.setItem("access_token", data.token);
         }
       }
 

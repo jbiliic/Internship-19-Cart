@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import client from "../../api/client";
 import styles from "./RegisterCard.module.css";
 import type { RegisterDto } from "../../types/auth/register.dto";
@@ -12,8 +11,6 @@ interface RegisterFormState extends RegisterDto {
 }
 
 export const RegisterCard = ({ onToggle }: RegisterCardProps) => {
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState<RegisterFormState>({
     name: "",
     email: "",

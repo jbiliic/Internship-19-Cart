@@ -1,9 +1,8 @@
-import React from "react";
 import styles from "./MainPageCard.module.css";
 
 interface MainPageCardProps {
   title: string;
-  price?: string;
+  price?: number;
   imageUrl: string;
   backgroundColor: string;
   onClick?: () => void;
@@ -17,7 +16,11 @@ export const MainPageCard = ({
   onClick,
 }: MainPageCardProps) => {
   return (
-    <div className={styles.card} onClick={onClick}>
+    <div
+      className={styles.card}
+      style={{ borderColor: backgroundColor }}
+      onClick={onClick}
+    >
       <div className={styles.imageContainer}>
         <img src={imageUrl} alt={title} className={styles.image} />
       </div>
@@ -28,7 +31,7 @@ export const MainPageCard = ({
       >
         <div className={styles.textWrapper}>
           <h3 className={styles.title}>{title}</h3>
-          {price && <span className={styles.price}>{price}</span>}
+          {price && <span className={styles.price}>{price} $</span>}
         </div>
         <div className={styles.arrow}>&gt;</div>
       </div>

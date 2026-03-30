@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { Home, Search, Heart, ShoppingBag, User } from "lucide-react";
 import styles from "./FooterNav.module.css";

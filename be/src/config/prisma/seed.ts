@@ -46,12 +46,12 @@ async function main() {
 
     // 3. KREIRANJE KORISNIKA
     console.log('🔐 Kreiranje korisnika...');
-    const adminPassword = await bcrypt.hash('admin', saltRounds);
-    const userPassword = await bcrypt.hash('user', saltRounds);
+    const adminPassword = await bcrypt.hash('admin1', saltRounds);
+    const userPassword = await bcrypt.hash('user12', saltRounds);
 
     const admin = await prisma.user.create({
         data: {
-            email: "admin",
+            email: "admin@gmail.com",
             password: adminPassword,
             name: "Administrator",
             isAdmin: true,
@@ -65,7 +65,7 @@ async function main() {
 
     const regularUser = await prisma.user.create({
         data: {
-            email: "user",
+            email: "user@gmail.com",
             password: userPassword,
             name: "Standard User",
             isAdmin: false,

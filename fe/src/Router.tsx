@@ -1,9 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./layout/ProtectedRoutes";
 import { AuthPage } from "./pages/authPage/AuthPage";
-import { MainLayout } from "./layout/MainLayout";
+import { FooterLayout } from "./layout/FooterLayout.tsx";
 import { routes } from "./constants/routes";
 import { MainPage } from "./pages/mainPage/MainPage";
+import { HeaderLayout } from "./layout/HeaderLayout.tsx";
 
 export const Router = () => {
   return (
@@ -12,8 +13,10 @@ export const Router = () => {
         <Route path={routes.AUTH} element={<AuthPage />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route element={<MainLayout />}>
-            <Route path={routes.HOME} element={<MainPage />} />
+          <Route element={<FooterLayout />}>
+            <Route element={<HeaderLayout />}>
+              <Route path={routes.HOME} element={<MainPage />} />
+            </Route>
           </Route>
         </Route>
 

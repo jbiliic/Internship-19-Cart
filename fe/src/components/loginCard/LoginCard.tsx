@@ -18,7 +18,7 @@ export const LoginCard = ({ onToggle }: LoginCardProps) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { isLoggedIn, isAdmin, isLoading, login, logout } = useAuth();
+  const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ export const LoginCard = ({ onToggle }: LoginCardProps) => {
     }
 
     if (data) {
-      login(data.accessToken, data.isAdmin);
+      login(data.access_token, data.isAdmin);
       alert("Login successful!");
       navigate(routes.HOME);
     }
