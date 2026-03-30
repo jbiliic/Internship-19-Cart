@@ -58,4 +58,13 @@ export class ProductsController {
     ) {
         return this.productsService.updateProduct(id, body);
     }
+
+    @Get('random/:count')
+    @ApiOkResponse({
+        description: 'Random products',
+        type: [ProductDto],
+    })
+    getRandomProducts(@Param('count', ParseIntPipe) count: number) {
+        return this.productsService.getRandomProducts(count);
+    }
 }

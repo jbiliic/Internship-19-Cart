@@ -195,4 +195,28 @@ export class ProductsService {
             throw new BadRequestException('Product not found');
         }
     }
+
+    async getRandomProducts(count: number): Promise<ProductDto[]> {
+        const products = await this.prisma.product.findMany({
+            include: {
+                categories: {
+                    select: {
+                        categoryId: true,
+                    },
+                },
+            },
+            orderBy: { createdAt: 'desc' },
+            take: count,
+        });
+
+        return products.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price.toNumber(),
+            color: p.color,
+            imgURL: p.imgURL,
+            inStock: p.inStock,
+            categoryIds: p.categories.map(c => c.categoryId),
+        })) as ProductDto[];
+    }
 }
