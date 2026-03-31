@@ -7,6 +7,7 @@ import { MainPage } from "./pages/mainPage/MainPage";
 import { HeaderLayout } from "./layout/HeaderLayout.tsx";
 import { SearchPage } from "./pages/searchPage/SearchPage.tsx";
 import { ProductDetailsPage } from "./pages/productDetailsPage/ProductDetailsPage.tsx";
+import { FavoritesPage } from "./pages/favsPage/FavoritesPage.tsx";
 
 export const Router = () => {
   return (
@@ -18,6 +19,7 @@ export const Router = () => {
           <Route element={<FooterLayout />}>
             <Route element={<HeaderLayout />}>
               <Route path={routes.HOME} element={<MainPage />} />
+              <Route path={routes.FAVS} element={<FavoritesPage />} />
             </Route>
             <Route path={routes.PRODUCTS} element={<SearchPage />} />
             <Route
