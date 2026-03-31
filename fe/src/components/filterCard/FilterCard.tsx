@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { X, ChevronDown } from "lucide-react";
 import styles from "./FilterCard.module.css";
 

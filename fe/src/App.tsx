@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { SplashScreen } from "./components/splashScreen/SplashScreen";
 import { AuthProvider } from "./providers/auth/authContext";
+import { CartProvider } from "./providers/cart/cartContext";
 import { Router } from "./Router";
 import "./App.css";
 
@@ -32,8 +33,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        {showSplash && <SplashScreen onFinished={handleSplashFinish} />}
-        <Router />
+        <CartProvider>
+          {showSplash && <SplashScreen onFinished={handleSplashFinish} />}
+          <Router />
+        </CartProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

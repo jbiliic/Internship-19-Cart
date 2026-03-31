@@ -1,11 +1,12 @@
 import { Heart, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import client from "../../api/client";
 import LoadingCircle from "../../components/loadingCircle/LoadingCircle";
 import type { Size } from "../../types/enums/size";
 import styles from "./ProductDetailsPage.module.css";
+import { useCart } from "../../providers/cart/useCart";
 
 interface ProductDetailsPageProps {
   productId?: number;
@@ -47,9 +48,11 @@ const formatPrice = (price: number) =>
   `${price.toFixed(2).replace(".", ",")} $`;
 
 export const ProductDetailsPage = ({ productId }: ProductDetailsPageProps) => {
+  const { addItem } = useCart();
   const { id } = useParams<{ id: string }>();
   const [selectedSize, setSelectedSize] = useState<Size | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const resolvedProductId = productId ?? (id ? Number(id) : undefined);
   const hasValidProductId =
     typeof resolvedProductId === "number" &&
@@ -71,16 +74,13 @@ export const ProductDetailsPage = ({ productId }: ProductDetailsPageProps) => {
 
     setSelectedSize(product.sizes[0] ?? null);
     setIsFavorite(Boolean(product.isInFavorite ?? product.IsInFavorite));
+    setQuantity(1);
   }, [product]);
 
-  const categories = useMemo(
-    () => ["Sve", "Streetwear", "Formal", "Casual"],
-    [],
-  );
   const handleToggleFavorite = async (productId: number) => {
-    const { data, error } = isFavorite
-      ? await client.delete<{ success: boolean }>(`/favorites/${productId}`)
-      : await client.post<{ success: boolean }>(`/favorites/${productId}`);
+    const { error } = isFavorite
+      ? await client.delete(`/favorites/${productId}`)
+      : await client.post(`/favorites/${productId}`);
 
     if (error) {
       alert(error);
@@ -88,6 +88,36 @@ export const ProductDetailsPage = ({ productId }: ProductDetailsPageProps) => {
     }
 
     setIsFavorite((prev) => !prev);
+  };
+
+  const handleAddToCart = () => {
+    if (!product || !selectedSize) return;
+
+    addItem({
+      productId: product.id,
+      quantity,
+      selectedSize,
+    });
+  };
+
+  const increaseQuantity = () => {
+    setQuantity((prev) => Math.min(99, prev + 1));
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity((prev) => Math.max(1, prev - 1));
+  };
+
+  const handleQuantityInputChange = (value: string) => {
+    if (!value) {
+      setQuantity(1);
+      return;
+    }
+
+    const nextValue = Number(value);
+    if (Number.isNaN(nextValue)) return;
+
+    setQuantity(Math.max(1, Math.min(99, Math.floor(nextValue))));
   };
 
   if (isLoading) {
@@ -144,11 +174,45 @@ export const ProductDetailsPage = ({ productId }: ProductDetailsPageProps) => {
           ))}
         </div>
 
+        <div className={styles.quantitySection}>
+          <p className={styles.quantityLabel}>Quantity:</p>
+          <div className={styles.quantityControl}>
+            <button
+              type="button"
+              className={styles.quantityBtn}
+              onClick={decreaseQuantity}
+              aria-label="Decrease quantity"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              min={1}
+              max={99}
+              value={quantity}
+              onChange={(event) =>
+                handleQuantityInputChange(event.target.value)
+              }
+              className={styles.quantityInput}
+              aria-label="Selected quantity"
+            />
+            <button
+              type="button"
+              className={styles.quantityBtn}
+              onClick={increaseQuantity}
+              aria-label="Increase quantity"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
         <div className={styles.actionsRow}>
           <button
             type="button"
             className={styles.addToCartBtn}
             disabled={!product.inStock || !selectedSize}
+            onClick={handleAddToCart}
           >
             ADD TO CART
           </button>

@@ -20,7 +20,7 @@ export const CartContext = createContext<CartContextType | undefined>(
   undefined,
 );
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
 
   const addItem = (item: CartItem) => {
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const placeOrder = async () => {
-    const { data, error } = await client.post("/orders", {
+    const { error } = await client.post("/orders", {
       items: items.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
@@ -65,3 +65,5 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </CartContext.Provider>
   );
 };
+
+export { CartProvider as AuthProvider };
