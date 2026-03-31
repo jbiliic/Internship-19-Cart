@@ -15,16 +15,18 @@ interface ProductDto {
 interface ProductCardProps {
   product: ProductDto;
   onToggleFavorite: (id: number) => void;
+  onClick?: (id: number) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onToggleFavorite,
+  onClick,
 }) => {
   const { id, name, price, imgURL, isInFavorite, inStock } = product;
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={() => onClick?.(id)}>
       <div className={styles.imageWrapper}>
         <img src={imgURL} alt={name} className={styles.productImage} />
 

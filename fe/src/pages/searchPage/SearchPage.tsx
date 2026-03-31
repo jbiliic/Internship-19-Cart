@@ -5,7 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import { Filter } from "lucide-react";
 import styles from "./SearchPage.module.css";
@@ -14,6 +14,7 @@ import { ProductCard } from "../../components/searchPageCard/SearchPageCard";
 import { FilterCard } from "../../components/filterCard/FilterCard";
 import { PaginationBtns } from "../../components/paginationBtns/PaginationBtns";
 import LoadingCircle from "../../components/loadingCircle/LoadingCircle";
+import { routes } from "../../constants/routes";
 
 interface SearchPageProps {
   search?: string;
@@ -81,6 +82,7 @@ export const SearchPage = ({ search }: SearchPageProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const activeQuery = parseUrlToQuery(searchParams);
   const [inputValue, setInputValue] = useState(
@@ -202,6 +204,9 @@ export const SearchPage = ({ search }: SearchPageProps) => {
                   key={product.id}
                   product={product}
                   onToggleFavorite={handleToggleFavorite}
+                  onClick={(id) =>
+                    navigate(routes.PRODUCT_DETAILS.replace(":id", String(id)))
+                  }
                 />
               ))}
             </div>
