@@ -1,28 +1,49 @@
 .paginationBtns {
   display: flex;
-  gap: 2rem;
+  justify-content: center;
   align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-lg) 0;
 }
 
 .paginationBtn {
-  padding: 0.8rem 2rem;
-  background: transparent;
-  border: 1px solid var(--glass-border);
-  color: var(--text-main);
+  background-color: var(--color-background);
+  color: var(--color-text-main);
+  border: 1.5px solid var(--color-border);
+  padding: 12px var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.2rem;
-  font-size: 0.7rem;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.paginationBtn:hover {
-  background: var(--text-main);
-  color: var(--bg-color);
+.paginationBtn:active {
+  transform: scale(0.95);
+  background-color: var(--color-background-muted);
 }
 
-.currentPageIndicator {
-  font-family: "JetBrains Mono", monospace;
-  color: var(--accent-color);
-  font-weight: bold;
+.nextBtn {
+  background-color: var(--color-text-main);
+  color: var(--color-background);
+  border-color: var(--color-text-main);
+}
+
+.nextBtn:active {
+  background-color: #333;
+}
+
+.pageIndicator {
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  min-width: 40px;
+  text-align: center;
 }

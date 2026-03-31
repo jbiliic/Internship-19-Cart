@@ -1,0 +1,84 @@
+.container {
+  min-height: 100vh;
+  padding-bottom: 120px;
+  background-color: var(--color-background);
+}
+
+.searchHeader {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-background);
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.searchInputWrapper {
+  padding: 0 var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 14px var(--spacing-lg);
+  background-color: var(--color-background-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-md);
+  outline: none;
+}
+
+.titleSection {
+  padding: var(--spacing-lg) var(--spacing-md);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Mobile grid from pic */
+  gap: var(--spacing-md);
+  padding: 0 var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .productGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .productGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.filterButtonFixed {
+  position: fixed;
+  right: var(--spacing-md);
+  bottom: calc(80px + var(--spacing-md));
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  padding: 10px 18px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  font-weight: 600;
+  font-size: var(--font-size-md);
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  z-index: 1200;
+  cursor: pointer;
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-muted);
+}

@@ -10,9 +10,11 @@ interface PaginationBtnsProps {
 export const PaginationBtns = (props: PaginationBtnsProps) => {
   return (
     <div className={style.paginationBtns}>
-      <button className={style.paginationBtn} onClick={props.onPrevious}>
-        Previous
-      </button>
+      {props.currentPage > 1 && (
+        <button className={style.paginationBtn} onClick={props.onPrevious}>
+          Previous
+        </button>
+      )}
       {props.hasMore && (
         <button className={style.paginationBtn} onClick={props.onNext}>
           Next

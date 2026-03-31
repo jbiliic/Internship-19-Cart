@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { Home, Search, Heart, ShoppingBag, User } from "lucide-react";
 import styles from "./FooterNav.module.css";
+import { routes } from "../../constants/routes";
 
 export const FooterNav = () => {
   return (
     <nav className={styles.nav}>
       <NavLink
-        to="/"
+        to={routes.HOME}
         className={({ isActive }) =>
           isActive ? `${styles.navItem} ${styles.active}` : styles.navItem
         }
@@ -15,7 +16,7 @@ export const FooterNav = () => {
       </NavLink>
 
       <NavLink
-        to="/search"
+        to={routes.PRODUCTS}
         className={({ isActive }) =>
           isActive ? `${styles.navItem} ${styles.active}` : styles.navItem
         }

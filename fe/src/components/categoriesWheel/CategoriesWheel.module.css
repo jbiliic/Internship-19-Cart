@@ -1,0 +1,32 @@
+.container {
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.pill {
+  white-space: nowrap;
+  padding: 10px var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  border: 1.5px solid var(--color-primary);
+  background-color: var(--color-background);
+  color: var(--color-text-main);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.activePill {
+  background-color: var(--color-text-main);
+  color: var(--color-background);
+  border-color: var(--color-text-main);
+}
