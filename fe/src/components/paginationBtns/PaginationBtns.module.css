@@ -1,0 +1,28 @@
+.paginationBtns {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.paginationBtn {
+  padding: 0.8rem 2rem;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.2rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.paginationBtn:hover {
+  background: var(--text-main);
+  color: var(--bg-color);
+}
+
+.currentPageIndicator {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--accent-color);
+  font-weight: bold;
+}

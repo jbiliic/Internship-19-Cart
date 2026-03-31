@@ -45,6 +45,11 @@ export const MainPage = () => {
     setSearchValue(e.target.value);
   };
 
+  const onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchValue.trim() !== "") {
+      return <Navigate to={routes.PRODUCTS} state={searchValue} />;
+    }
+  };
   const colors = ["#BC8E5E", "#7D7D7D", "#5A463E", "#BC8E5E"];
 
   if (isError) return <Navigate to={routes.ERROR} state={error} />;
@@ -59,6 +64,7 @@ export const MainPage = () => {
           placeholder="Search for..."
           value={searchValue}
           onChange={handleChange}
+          onKeyDown={onSearch}
         />
       </div>
 
