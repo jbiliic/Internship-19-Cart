@@ -9,6 +9,7 @@ import { SearchPage } from "./pages/searchPage/SearchPage.tsx";
 import { ProductDetailsPage } from "./pages/productDetailsPage/ProductDetailsPage.tsx";
 import { FavoritesPage } from "./pages/favsPage/FavoritesPage.tsx";
 import { CartPage } from "./pages/cartPage/CartPage.tsx";
+import { ProfilePage } from "./pages/profilePage/ProfilePage.tsx";
 
 export const Router = () => {
   return (
@@ -21,6 +22,7 @@ export const Router = () => {
             <Route element={<HeaderLayout />}>
               <Route path={routes.HOME} element={<MainPage />} />
               <Route path={routes.FAVS} element={<FavoritesPage />} />
+              <Route path={routes.PROFILE} element={<ProfilePage />} />
             </Route>
             <Route path={routes.PRODUCTS} element={<SearchPage />} />
             <Route
