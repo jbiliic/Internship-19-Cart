@@ -34,6 +34,11 @@ export class OrdersService {
                 id: order.id,
                 totalPrice: Number(total.toFixed(2)),
                 status: order.status,
+                IBAN: order.IBAN,
+                address: order.address,
+                county: order.county,
+                city: order.city,
+                zipCode: order.zipCode,
                 products: order.products.map((op) => ({
                     id: op.product.id,
                     name: op.product.name,
@@ -41,7 +46,6 @@ export class OrdersService {
                     price: op.price.toNumber(),
                     color: op.product.color,
                     size: op.selectedSize,
-
                 })),
             } as OrderDto;
         });
@@ -50,6 +54,11 @@ export class OrdersService {
     async createOrder(userId: number, items: OrderProductDto[]): Promise<OrderDto> {
         if (items.length === 0) throw new BadRequestException('Order must be at least one item');
         if (items.some(item => item.quantity <= 0)) throw new BadRequestException('Quantity must be > 0');
+
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
 
         const productIds = items.map(item => item.productId);
         const productsFromDb = await this.prisma.product.findMany({
@@ -82,6 +91,11 @@ export class OrdersService {
         const newOrder = await this.prisma.order.create({
             data: {
                 userId,
+                IBAN: user.IBAN,
+                address: user.address,
+                county: user.county,
+                city: user.city,
+                zipCode: user.zipCode,
                 products: {
                     create: items.map((item) => {
                         const product = productsFromDb.find(p => p.id === item.productId);
@@ -106,6 +120,12 @@ export class OrdersService {
         return {
             id: newOrder.id,
             totalPrice: Number(total.toFixed(2)),
+            status: newOrder.status,
+            IBAN: newOrder.IBAN,
+            address: newOrder.address,
+            county: newOrder.county,
+            city: newOrder.city,
+            zipCode: newOrder.zipCode,
             products: newOrder.products.map(op => ({
                 id: op.product.id,
                 name: op.product.name,
@@ -145,6 +165,11 @@ export class OrdersService {
                 id: order.id,
                 totalPrice: Number(total.toFixed(2)),
                 status: order.status,
+                IBAN: order.IBAN,
+                address: order.address,
+                county: order.county,
+                city: order.city,
+                zipCode: order.zipCode,
                 products: order.products.map((op) => ({
                     id: op.product.id,
                     name: op.product.name,

@@ -7,8 +7,16 @@ export class ContentTypeMiddleware implements NestMiddleware {
     use(req: Request, res: Response, next: NextFunction) {
         const methodsWithBody = ['POST', 'PUT', 'PATCH'];
         if (methodsWithBody.includes(req.method)) {
-            const contentType = req.headers['content-type'];
-            if (!contentType || !contentType.includes('application/json')) {
+            const contentLength = Number(req.headers['content-length'] ?? 0);
+            const hasTransferEncoding = Boolean(req.headers['transfer-encoding']);
+            const hasBody = contentLength > 0 || hasTransferEncoding;
+
+            if (!hasBody) {
+                next();
+                return;
+            }
+
+            if (!req.is('application/json')) {
                 throw new BadRequestException('Content-Type must be application/json');
             }
         }

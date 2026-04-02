@@ -18,7 +18,7 @@ import { ContentTypeMiddleware } from './common/middleware/content-type.middlewa
     ThrottlerModule.forRoot([{
         name: 'default',
         ttl: 60000,
-        limit: 10,
+        limit: 100,
     }]),
         PrismaModule,
         UserModule,

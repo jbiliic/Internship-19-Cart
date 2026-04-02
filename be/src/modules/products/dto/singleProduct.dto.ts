@@ -53,4 +53,6 @@ export class SingleProductDto {
     @IsInt({ each: true })
     @Type(() => Number)
     categoryIds: number[];
+
+    IsInFavorite?: boolean;
 }

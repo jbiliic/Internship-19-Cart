@@ -1,4 +1,4 @@
-import { createContext, useState, type ReactNode } from "react";
+import { createContext, useEffect, useState, type ReactNode } from "react";
 import type { Size } from "../../types/enums/size";
 import client from "../../api/client";
 
@@ -21,10 +21,18 @@ export const CartContext = createContext<CartContextType | undefined>(
 );
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    const savedItems = localStorage.getItem("cartItems");
+    return savedItems ? JSON.parse(savedItems) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(items));
+  }, [items]);
 
   const addItem = (item: CartItem) => {
     setItems((prevItems) => [...prevItems, item]);
+    alert("Item added to cart!");
   };
 
   const removeItem = (item: CartItem) => {
@@ -36,9 +44,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           i.quantity !== item.quantity,
       ),
     );
+    alert("Item removed from cart!");
   };
   const clearCart = () => {
     setItems([]);
+    alert("Cart cleared!");
   };
 
   const placeOrder = async () => {

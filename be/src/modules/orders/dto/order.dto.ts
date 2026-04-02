@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Order } from "@prisma/client";
-import { IsDecimal, IsEnum, IsNotEmpty, IsNumber } from "class-validator";
+import { IsDecimal, IsEnum, IsIBAN, IsNotEmpty, IsNumber } from "class-validator";
 import { ProductDto } from "./product.dto";
 import { OrderStatus } from "@prisma/client";
 
@@ -21,4 +21,26 @@ export class OrderDto {
     @ApiProperty({ example: "PENDING" })
     @IsEnum(OrderStatus)
     status?: OrderStatus;
+
+    @ApiProperty({ example: 'DE12345678901234567890' })
+    @IsNotEmpty()
+    @IsIBAN()
+    IBAN: string;
+
+    @ApiProperty({ example: '123 Main St' })
+    @IsNotEmpty()
+    address: string;
+
+    @ApiProperty({ example: 'Example County' })
+    @IsNotEmpty()
+    county: string;
+
+    @ApiProperty({ example: 'Example City' })
+    @IsNotEmpty()
+    city: string;
+
+    @ApiProperty({ example: '12345' })
+    @IsNotEmpty()
+    @IsNumber()
+    zipCode: number;
 }

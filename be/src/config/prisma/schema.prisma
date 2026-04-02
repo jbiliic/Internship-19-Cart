@@ -103,6 +103,11 @@ model Order {
   id        Int         @id @default(autoincrement())
   userId    Int
   status    OrderStatus @default(PENDING)
+  IBAN     String
+  address   String
+  county   String
+  city     String
+  zipCode  Int
 
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   products  OrderProduct[]

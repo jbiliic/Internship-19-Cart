@@ -1,0 +1,125 @@
+.card {
+  display: grid;
+  grid-template-columns: minmax(116px, 38%) 1fr;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-card);
+}
+
+.imagePane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  border-radius: var(--border-radius-sm);
+  background-color: #f0eeee;
+  padding: var(--spacing-md);
+  mix-blend-mode: multiply;
+}
+
+.sellerTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: #b7b7b7;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+.brand {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--color-text-main);
+  margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+}
+
+.name {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  line-height: 1.25;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.meta {
+  margin-top: var(--spacing-xs);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: #b1b1b1;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.priceBlock {
+  margin-top: auto;
+  padding-top: var(--spacing-lg);
+}
+
+.price {
+  color: var(--color-price-red);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.subPrice {
+  color: #b5b5b5;
+  font-size: var(--font-size-sm);
+  line-height: 1.3;
+}
+
+.footerMeta {
+  margin-top: var(--spacing-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #bdbdbd;
+}
+
+@media (max-width: 359px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .image {
+    max-width: 200px;
+  }
+}

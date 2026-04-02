@@ -10,7 +10,7 @@ import { PaginatedProductsDto } from './dto/paginatedProduct.dto';
 export class ProductsService {
     constructor(private readonly prisma: PrismaService) { }
 
-    async getProducts(getProductsDto: GetProductsQueryDto): Promise<PaginatedProductsDto> {
+    async getProducts(getProductsDto: GetProductsQueryDto, userId: number): Promise<PaginatedProductsDto> {
         const {
             categoryId, minPrice, maxPrice, search,
             sortBy, sortOrder, inStock,
@@ -44,6 +44,10 @@ export class ProductsService {
                 where,
                 include: {
                     categories: { select: { categoryId: true } },
+                    favorites: userId ? {
+                        where: { userId: userId },
+                        select: { id: true }
+                    } : false,
                 },
                 orderBy: sortBy ? { [sortBy]: sortOrder || 'asc' } : { createdAt: 'desc' },
                 skip: (page - 1) * limit,
@@ -69,11 +73,12 @@ export class ProductsService {
                 inStock: p.inStock,
                 sizes: p.size,
                 categoryIds: p.categories.map(c => c.categoryId),
+                isInFavorite: userId ? p.favorites.length > 0 : false,
             })) as ProductDto[],
         };
     }
 
-    async getProductById(id: number): Promise<SingleProductDto> {
+    async getProductById(id: number, userId: number): Promise<SingleProductDto> {
         const product = await this.prisma.product.findUnique({
             where: { id },
             include: {
@@ -82,6 +87,10 @@ export class ProductsService {
                         categoryId: true,
                     },
                 },
+                favorites: userId ? {
+                    where: { userId: userId },
+                    select: { id: true }
+                } : false,
             },
         });
         if (!product) {
@@ -96,6 +105,7 @@ export class ProductsService {
             inStock: product.inStock,
             categoryIds: product.categories.map(c => c.categoryId),
             sizes: product.size,
+            IsInFavorite: userId ? product.favorites.length > 0 : false,
         } as SingleProductDto;
     }
 
@@ -218,5 +228,29 @@ export class ProductsService {
             inStock: p.inStock,
             categoryIds: p.categories.map(c => c.categoryId),
         })) as ProductDto[];
+    }
+
+    async getProductsByIds(ids: number[]): Promise<SingleProductDto[]> {
+        const products = await this.prisma.product.findMany({
+            where: { id: { in: ids } },
+            include: {
+                categories: {
+                    select: {
+                        categoryId: true,
+                    },
+                },
+            },
+        });
+
+        return products.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price.toNumber(),
+            color: p.color,
+            imgURL: p.imgURL,
+            inStock: p.inStock,
+            categoryIds: p.categories.map(c => c.categoryId),
+            sizes: p.size,
+        })) as SingleProductDto[];
     }
 }

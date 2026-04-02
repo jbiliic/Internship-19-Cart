@@ -152,13 +152,19 @@ async function main() {
             data: {
                 userId: regularUser.id,
                 status: orderStatuses[i],
+                IBAN: regularUser.IBAN,
+                address: regularUser.address,
+                county: regularUser.county,
+                city: regularUser.city,
+                zipCode: regularUser.zipCode,
                 products: {
                     create: [
                         {
                             productId: createdProducts[i].id,
                             quantity: 1,
                             price: createdProducts[i].price,
-                            selectedSize: createdProducts[i].size[0]
+                            selectedSize: createdProducts[i].size[0],
+
                         },
                         {
                             productId: createdProducts[i + 10].id,

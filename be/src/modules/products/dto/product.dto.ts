@@ -29,4 +29,6 @@ export class ProductDto {
     @IsNumber({}, { message: 'Category IDs must be a number' })
     @IsArray({ message: 'Category IDs must be an array' })
     categoryIds: number[];
+
+    isInFavorite?: boolean;
 }
