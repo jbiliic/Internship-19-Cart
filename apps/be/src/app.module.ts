@@ -12,6 +12,8 @@ import { ProductsModule } from './modules/products/products.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ContentTypeMiddleware } from './common/middleware/content-type.middleware';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
     imports: [ConfigModule.forRoot({ isGlobal: true }),
@@ -26,7 +28,10 @@ import { ContentTypeMiddleware } from './common/middleware/content-type.middlewa
         AuthModule,
         OrdersModule,
         CategoriesModule,
-        ProductsModule
+        ProductsModule,
+    ServeStaticModule.forRoot({
+        rootPath: join(__dirname, '..', '..', '..', 'fe', 'dist'),
+    })
     ],
     controllers: [AppController],
     providers: [AppService,

@@ -56,14 +56,14 @@ const fetchCategories = async () => {
 
 const createCategory = async (name: string) => {
   if (
-    confirm(
+    !confirm(
       `Are you sure you want to create a new category with the name "${name}"?`,
     )
   ) {
     alert("Category creation cancelled.");
     return;
   }
-  const { data, error } = await client.post("/categories", { name });
+  const { data, error } = await client.post("/categories", { name: name });
   if (error) {
     alert(error);
     throw new Error(error);

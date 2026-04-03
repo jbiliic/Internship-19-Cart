@@ -3,7 +3,7 @@ import client from "../../api/client";
 import { useQuery } from "@tanstack/react-query";
 import { MainPageCard } from "../../components/mainPageCard/MainPageCard";
 import styles from "./MainPage.module.css";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { routes } from "../../constants/routes";
 import LoadingCircle from "../../components/loadingCircle/LoadingCircle";
 interface Product {
@@ -29,6 +29,7 @@ const fetchRandomProducts = async (): Promise<Product[] | null> => {
 
 export const MainPage = () => {
   const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
 
   const {
     data: products,
@@ -47,7 +48,7 @@ export const MainPage = () => {
 
   const onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && searchValue.trim() !== "") {
-      return <Navigate to={routes.PRODUCTS} state={searchValue} />;
+      navigate(routes.PRODUCTS, { state: searchValue });
     }
   };
   const colors = ["#BC8E5E", "#7D7D7D", "#5A463E", "#BC8E5E"];
@@ -80,9 +81,7 @@ export const MainPage = () => {
               imageUrl={product.imgURL}
               backgroundColor={colors[index % colors.length]}
               onClick={() => {
-                return (
-                  <Navigate to={routes.PRODUCT_DETAILS} state={product.id} />
-                );
+                navigate(routes.PRODUCT_DETAILS, { state: product.id });
               }}
             />
           ))

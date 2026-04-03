@@ -5,7 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import { Filter } from "lucide-react";
 import styles from "./SearchPage.module.css";
@@ -15,10 +15,6 @@ import { FilterCard } from "../../components/filterCard/FilterCard";
 import { PaginationBtns } from "../../components/paginationBtns/PaginationBtns";
 import LoadingCircle from "../../components/loadingCircle/LoadingCircle";
 import { routes } from "../../constants/routes";
-
-interface SearchPageProps {
-  search?: string;
-}
 
 interface FilteringQuery {
   categoryId?: number;
@@ -78,7 +74,9 @@ const parseUrlToQuery = (params: URLSearchParams): FilteringQuery => {
   };
 };
 
-export const SearchPage = ({ search }: SearchPageProps) => {
+export const SearchPage = () => {
+  const location = useLocation();
+  const search = location.state;
   const [searchParams, setSearchParams] = useSearchParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const queryClient = useQueryClient();

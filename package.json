@@ -5,13 +5,20 @@
         "helmet": "^8.1.0"
     },
     "scripts": {
-        "start:be": "cd be && npm run start:dev",
-        "start:fe": "cd fe && npm run dev",
-        "dev": "concurrently -n \"BE,FE\" -c \"cyan,magenta\" \"npm run start:be\" \"wait-on http://localhost:3000/api && npm run start:fe\""
+        "start:be": "cd apps/be && npm run start:dev",
+        "start:fe": "cd apps/fe && npm run dev",
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "start": "concurrently \"npm run start:be\" \"npm run start:fe\""
     },
+    "workspaces": [
+        "apps/*"
+    ],
+    "packageManager": "npm@11.9.0",
     "devDependencies": {
         "concurrently": "^9.2.1",
-        "prisma": "^6.12.0",
+        "prisma": "^7.5.0",
+        "turbo": "^2.9.3",
         "wait-on": "^9.0.4"
     }
 }

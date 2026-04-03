@@ -1,15 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ProtectedRoute } from "./layout/ProtectedRoutes";
-import { AuthPage } from "./pages/authPage/AuthPage";
+import { ProtectedRoute } from "./layout/ProtectedRoutes.tsx";
+import { AuthPage } from "./pages/authPage/AuthPage.tsx";
 import { FooterLayout } from "./layout/FooterLayout.tsx";
-import { routes } from "./constants/routes";
-import { MainPage } from "./pages/mainPage/MainPage";
+import { routes } from "./constants/routes.ts";
+import { MainPage } from "./pages/mainPage/MainPage.tsx";
 import { HeaderLayout } from "./layout/HeaderLayout.tsx";
 import { SearchPage } from "./pages/searchPage/SearchPage.tsx";
 import { ProductDetailsPage } from "./pages/productDetailsPage/ProductDetailsPage.tsx";
 import { FavoritesPage } from "./pages/favsPage/FavoritesPage.tsx";
 import { CartPage } from "./pages/cartPage/CartPage.tsx";
 import { ProfilePage } from "./pages/profilePage/ProfilePage.tsx";
+import { AdminPage } from "./pages/adminPage/AdminPage.tsx";
 
 export const Router = () => {
   return (
@@ -34,7 +35,7 @@ export const Router = () => {
         </Route>
 
         <Route element={<ProtectedRoute adminOnly={true} />}>
-          {/* <Route path={ routes.ADMIN} element={<div>Admin Panel</div>} /> */}
+          <Route path={routes.ADMIN} element={<AdminPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
