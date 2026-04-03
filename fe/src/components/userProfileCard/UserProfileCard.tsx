@@ -1,9 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import client from "../../api/client";
-import LoadingCircle from "../loadingCircle/LoadingCircle";
 import styles from "./UserProfileCard.module.css";
 
-interface UserProfileDto {
+interface UserProfileProps {
   email: string;
   name: string;
   IBAN: string;
@@ -13,30 +10,13 @@ interface UserProfileDto {
   zipCode: number;
 }
 
-const fetchUserProfile = async () => {
-  const { data, error } = await client.get<UserProfileDto>("/users/me");
+interface UserProfileCardProps {
+  data: UserProfileProps | null;
+}
 
-  if (error) {
-    throw new Error(error);
-  }
-
-  return data;
-};
-
-export const UserProfileCard = () => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["userProfile"],
-    queryFn: fetchUserProfile,
-  });
-
-  if (isLoading) return <LoadingCircle />;
-
-  if (error || !data) {
-    return (
-      <div className={styles.card}>
-        <p className={styles.errorText}>Unable to load your profile card.</p>
-      </div>
-    );
+export const UserProfileCard = ({ data }: UserProfileCardProps) => {
+  if (!data) {
+    return <div className={styles.card}>User profile data not available.</div>;
   }
 
   const regionDetails = [data.county, `${data.city} ${data.zipCode}`.trim()]
