@@ -1,0 +1,107 @@
+.card {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-background);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.summaryButton {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.summaryButton:hover {
+  background: var(--color-background-muted);
+}
+
+.summaryText {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.statusBadge {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: white;
+  background: var(--color-primary);
+  border-radius: 999px;
+  padding: 5px 10px;
+}
+
+.detailsSection {
+  border-top: 1px solid var(--color-border);
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detailsSection p {
+  margin: 0;
+  color: var(--color-text-main);
+}
+
+.productsBlock {
+  margin-top: 6px;
+}
+
+.productsBlock h4 {
+  margin: 0 0 6px;
+  font-size: var(--font-size-sm);
+}
+
+.productList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.productItem {
+  margin-bottom: 4px;
+}
+
+.actionsRow {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.statusSelect {
+  min-width: 145px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  font-size: var(--font-size-sm);
+  background: var(--color-background);
+  color: var(--color-text-main);
+}
+
+.editButton,
+.closeButton {
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.editButton {
+  flex: 1;
+  background: var(--color-primary);
+  color: white;
+}
+
+.closeButton {
+  background: var(--color-background-muted);
+  color: var(--color-text-main);
+}

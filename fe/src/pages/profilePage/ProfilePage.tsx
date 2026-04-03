@@ -6,6 +6,7 @@ import { useAuth } from "../../providers/auth/useAuth";
 import styles from "./ProfilePage.module.css";
 import { EditProfileCard } from "../../components/editProfileCard/EditProfileCard";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface UserProfileDto {
   email: string;
@@ -30,6 +31,7 @@ const fetchUserProfile = async () => {
 export const ProfilePage = () => {
   const { isAdmin } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
   const { data, isLoading, error } = useQuery({
     queryKey: ["userProfile"],
     queryFn: fetchUserProfile,
@@ -52,7 +54,9 @@ export const ProfilePage = () => {
 
       <div className={styles.actionsContainer}>
         <button onClick={() => setIsEditing(true)}>Edit Profile</button>
-        {isAdmin && <button>Admin Panel</button>}
+        {isAdmin && (
+          <button onClick={() => navigate("/admin")}>Admin Panel</button>
+        )}
       </div>
 
       {isEditing && (
