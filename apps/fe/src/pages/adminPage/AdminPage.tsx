@@ -5,6 +5,8 @@ import { OrderCard } from "../../components/admin/orderCard/OrderCard";
 import { useQuery } from "@tanstack/react-query";
 import type { Size } from "../../types/enums/size";
 import { ProductCardAdmin } from "../../components/admin/productCard/ProductCardAdmin";
+import { AddProductAdmin } from "../../components/admin/addProduct/AddProductAdmin";
+import styles from "./AdminPage.module.css";
 
 interface ProductDto {
   id: number;
@@ -143,102 +145,151 @@ export const AdminPage = () => {
     data: productsData,
     isLoading: isProductsLoading,
     error: productsError,
+    refetch: refetchProducts,
   } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
   });
 
   return (
-    <>
-      <div>
-        <h2>Orders</h2>
-
-        <div>
-          <label htmlFor="status">Filter by Status:</label>
-          <select
-            id="status"
-            value={selectedStatus}
-            onChange={(e) =>
-              setSelectedStatus(e.target.value as OrderStatus | "ALL")
-            }
-          >
-            <option value="ALL">All statuses</option>
-            {ORDER_STATUS_OPTIONS.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
-          {isLoading ? <p>Loading orders...</p> : null}
-          {error ? <p>Failed to load orders.</p> : null}
-          {data &&
-            !isLoading &&
-            !error &&
-            data.map((order: OrderDto) => (
-              <OrderCard key={order.id} order={order} />
-            ))}
+    <main className={styles.page}>
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Orders</h2>
         </div>
-      </div>
 
-      <div>
-        <h2>Categories</h2>
-        <div>
-          {isCategoriesLoading ? <p>Loading categories...</p> : null}
-          {categoriesError ? <p>Failed to load categories.</p> : null}
+        <div className={styles.sectionBody}>
+          <div className={styles.filterRow}>
+            <label htmlFor="status" className={styles.label}>
+              Filter by Status:
+            </label>
+            <select
+              id="status"
+              className={styles.select}
+              value={selectedStatus}
+              onChange={(e) =>
+                setSelectedStatus(e.target.value as OrderStatus | "ALL")
+              }
+            >
+              <option value="ALL">All statuses</option>
+              {ORDER_STATUS_OPTIONS.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {isLoading ? (
+            <p className={styles.infoText}>Loading orders...</p>
+          ) : null}
+          {error ? (
+            <p className={styles.errorText}>Failed to load orders.</p>
+          ) : null}
+          <div className={styles.cardsList}>
+            {data &&
+              !isLoading &&
+              !error &&
+              data.map((order: OrderDto) => (
+                <OrderCard key={order.id} order={order} />
+              ))}
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Categories</h2>
+        </div>
+
+        <div className={styles.sectionBody}>
+          {isCategoriesLoading ? (
+            <p className={styles.infoText}>Loading categories...</p>
+          ) : null}
+          {categoriesError ? (
+            <p className={styles.errorText}>Failed to load categories.</p>
+          ) : null}
           {categoriesData && categoriesData.length > 0 ? (
-            <ul>
+            <ul className={styles.categoryList}>
               {categoriesData.map((category) => (
                 <li
                   key={category.id}
+                  className={`${styles.categoryItem} ${
+                    selectedCategory === category.id
+                      ? styles.categoryItemActive
+                      : ""
+                  }`}
                   onClick={() => setSelectedCategory(category.id)}
                 >
                   {category.name}
                 </li>
               ))}
             </ul>
-          ) : null}
-        </div>
-        <div>
-          <div>
-            <input
-              type="text"
-              value={categoryInput}
-              onChange={(e) => setCategoryInput(e.target.value)}
-            />
+          ) : (
+            <p className={styles.infoText}>No categories found.</p>
+          )}
+
+          <div className={styles.categoryActions}>
+            <div className={styles.categoryCreateRow}>
+              <input
+                type="text"
+                className={styles.input}
+                value={categoryInput}
+                onChange={(e) => setCategoryInput(e.target.value)}
+                placeholder="New category name"
+              />
+              <button
+                className={styles.primaryBtn}
+                onClick={() => {
+                  createCategory(categoryInput);
+                  setCategoryInput("");
+                }}
+              >
+                Create Category
+              </button>
+            </div>
             <button
-              onClick={() => {
-                createCategory(categoryInput);
-                setCategoryInput("");
-              }}
+              className={styles.dangerBtn}
+              onClick={() => deleteCategories(selectedCategory as number)}
+              disabled={selectedCategory === "ALL"}
             >
-              Create Category
+              Delete Selected
             </button>
           </div>
-          <button
-            onClick={() => deleteCategories(selectedCategory as number)}
-            disabled={selectedCategory === "ALL"}
-          >
-            Delete Selected
-          </button>
         </div>
-      </div>
-      <div>
-        <h2>Products</h2>
-        <div>
-          {productsData && productsData.length > 0
-            ? productsData.map((product) => (
-                <ProductCardAdmin key={product.id} product={product} />
-              ))
-            : null}
-          {isProductsLoading ? <p>Loading products...</p> : null}
-          {productsError ? <p>Failed to load products.</p> : null}
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Products</h2>
+        </div>
+
+        <div className={styles.sectionBody}>
+          <div className={styles.addProductWrap}>
+            <AddProductAdmin onCreated={() => refetchProducts()} />
+          </div>
+
+          <div className={styles.cardsList}>
+            {productsData && productsData.length > 0
+              ? productsData.map((product) => (
+                  <ProductCardAdmin key={product.id} product={product} />
+                ))
+              : null}
+          </div>
+
+          {isProductsLoading ? (
+            <p className={styles.infoText}>Loading products...</p>
+          ) : null}
+          {productsError ? (
+            <p className={styles.errorText}>Failed to load products.</p>
+          ) : null}
           {!isProductsLoading &&
           !productsError &&
           productsData?.length === 0 ? (
-            <p>No products found.</p>
+            <p className={styles.infoText}>No products found.</p>
           ) : null}
         </div>
-      </div>
-    </>
+      </section>
+    </main>
   );
 };
