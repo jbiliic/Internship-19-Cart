@@ -45,7 +45,7 @@ const formatPrice = (value: number) =>
 
 export const CartPage = () => {
   const navigate = useNavigate();
-  const { items, placeOrder } = useCart();
+  const { items } = useCart();
 
   const fetchCartProducts = async (
     items: { productId: number; quantity: number; selectedSize: Size }[],

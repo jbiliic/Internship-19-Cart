@@ -1,7 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../providers/auth/useAuth";
 import LoadingCircle from "../components/loadingCircle/LoadingCircle";
-import { useEffect, useState } from "react";
 
 interface ProtectedRouteProps {
   adminOnly?: boolean;

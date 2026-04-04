@@ -1,0 +1,14 @@
+.git
+.github
+.vscode
+.turbo
+node_modules
+**/node_modules
+dist
+**/dist
+coverage
+**/coverage
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.env

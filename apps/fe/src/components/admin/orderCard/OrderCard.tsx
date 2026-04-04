@@ -41,7 +41,7 @@ export const OrderCard = ({ order }: { order: OrderDto }) => {
       )
     )
       return;
-    const { data, error } = await client.patch(`/orders/${order.id}/status`, {
+    const { error } = await client.patch(`/orders/${order.id}/status`, {
       status: selectedStatus,
     });
     if (error) {

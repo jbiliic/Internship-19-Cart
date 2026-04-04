@@ -43,10 +43,7 @@ export class AuthController {
         if (!authHeader) {
             throw new UnauthorizedException('No token provided');
         }
-        console.log('Received token:', authHeader);
         const token = authHeader.split(' ')[1];
-        console.log('Extracted token:', token);
-
         if (!token) {
             throw new UnauthorizedException('Invalid token format');
         }
