@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserGuard } from 'src/common/auth/guards/user.guard';
+import { UserGuard } from '../../common/auth/guards/user.guard';
 import { UserDto } from './dto/user.dto';
-import { AuthenticatedUser } from 'src/common/auth/interfaces/authenticatedUser.interface';
+import { AuthenticatedUser } from '../../common/auth/interfaces/authenticatedUser.interface';
 
 @ApiTags('User')
 @Controller('users')

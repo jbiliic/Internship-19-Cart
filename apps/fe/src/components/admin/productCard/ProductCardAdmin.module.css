@@ -1,0 +1,138 @@
+.card {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-background);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.summaryBtn {
+  width: 100%;
+  border: none;
+  background: var(--color-background);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.summaryBtn:hover {
+  background: var(--color-background-muted);
+}
+
+.smallImg {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--border-radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.summaryText {
+  min-width: 0;
+}
+
+.name {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.id {
+  margin: 4px 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.expandPanel {
+  border-top: 1px solid var(--color-border);
+  padding: 12px 14px 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-main);
+}
+
+.input {
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-md);
+  padding: 9px 10px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-main);
+  background: var(--color-background);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+}
+
+.checkboxField {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-main);
+}
+
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.saveBtn,
+.deleteBtn,
+.closeBtn {
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saveBtn {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.deleteBtn {
+  background: var(--color-price-red);
+  color: #fff;
+}
+
+.closeBtn {
+  background: var(--color-background-muted);
+  color: var(--color-text-main);
+}
+
+.saveBtn:disabled,
+.deleteBtn:disabled,
+.closeBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 760px) {
+  .expandPanel {
+    grid-template-columns: 1fr;
+  }
+}

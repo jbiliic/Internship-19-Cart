@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntP
 import { CategoriesService } from './categories.service';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CategoryDto } from './dto/category.dto';
-import { UserGuard } from 'src/common/auth/guards/user.guard';
-import { AdminGuard } from 'src/common/auth/guards/admin.guard';
+import { UserGuard } from '../../common/auth/guards/user.guard';
+import { AdminGuard } from '../../common/auth/guards/admin.guard';
 import { CreateCategoryDto } from './dto/createCategory.dto';
 
 @ApiTags('Categories')

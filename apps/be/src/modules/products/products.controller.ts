@@ -6,9 +6,9 @@ import { CreateProductDto } from './dto/createProduct.dto';
 import { ProductDto } from './dto/product.dto';
 import { SingleProductDto } from './dto/singleProduct.dto';
 import { PaginatedProductsDto } from './dto/paginatedProduct.dto';
-import { AuthenticatedUser } from 'src/common/auth/interfaces/authenticatedUser.interface';
-import { UserGuard } from 'src/common/auth/guards/user.guard';
-import { AdminGuard } from 'src/common/auth/guards/admin.guard';
+import { AuthenticatedUser } from '../../common/auth/interfaces/authenticatedUser.interface';
+import { UserGuard } from '../../common/auth/guards/user.guard';
+import { AdminGuard } from '../../common/auth/guards/admin.guard';
 
 
 @ApiTags('Products')

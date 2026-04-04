@@ -4,21 +4,31 @@ import client from "../../api/client";
 import { OrderCard } from "../../components/admin/orderCard/OrderCard";
 import { useQuery } from "@tanstack/react-query";
 import type { Size } from "../../types/enums/size";
+import { ProductCardAdmin } from "../../components/admin/productCard/ProductCardAdmin";
 
 interface ProductDto {
+  id: number;
+  name: string;
+  price: number;
+  inStock: boolean;
+  imgURL?: string;
+  categoryIds: number[];
+}
+interface ProductOrderDto {
   id: number;
   name: string;
   price: number;
   quantity: number;
   imgURL: string;
   color: string;
+  inStock: boolean;
   size: Size;
 }
 
 interface OrderDto {
   id: number;
   totalPrice: number;
-  products: ProductDto[];
+  products: ProductOrderDto[];
   status?: OrderStatus;
   IBAN: string;
   address: string;
@@ -30,6 +40,15 @@ interface OrderDto {
 interface CategoryDto {
   id: number;
   name: string;
+}
+
+interface PaginatedProductsDto {
+  total: number;
+  page: number;
+  limit: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  data: ProductDto[];
 }
 
 const ORDER_STATUS_OPTIONS = Object.values(orderStatus);
@@ -81,13 +100,24 @@ const deleteCategories = async (id: number) => {
     alert("Category deletion cancelled.");
     return;
   }
-  const { data, error } = await client.delete(`/categories/${id}`);
+  const { error } = await client.delete(`/categories/${id}`);
   if (error) {
     alert(error);
     throw new Error(error);
   }
   alert("Category deleted successfully.");
 };
+
+const fetchProducts = async () => {
+  const { data, error } = await client.get<PaginatedProductsDto>("/products", {
+    params: { page: 1, limit: 100 },
+  });
+  if (error) {
+    throw new Error(error);
+  }
+  return data?.data ?? [];
+};
+
 export const AdminPage = () => {
   const [selectedStatus, setSelectedStatus] = useState<OrderStatus | "ALL">(
     "ALL",
@@ -107,6 +137,15 @@ export const AdminPage = () => {
   } = useQuery({
     queryKey: ["categories"],
     queryFn: fetchCategories,
+  });
+
+  const {
+    data: productsData,
+    isLoading: isProductsLoading,
+    error: productsError,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
   });
 
   return (
@@ -130,7 +169,11 @@ export const AdminPage = () => {
               </option>
             ))}
           </select>
+          {isLoading ? <p>Loading orders...</p> : null}
+          {error ? <p>Failed to load orders.</p> : null}
           {data &&
+            !isLoading &&
+            !error &&
             data.map((order: OrderDto) => (
               <OrderCard key={order.id} order={order} />
             ))}
@@ -140,6 +183,8 @@ export const AdminPage = () => {
       <div>
         <h2>Categories</h2>
         <div>
+          {isCategoriesLoading ? <p>Loading categories...</p> : null}
+          {categoriesError ? <p>Failed to load categories.</p> : null}
           {categoriesData && categoriesData.length > 0 ? (
             <ul>
               {categoriesData.map((category) => (
@@ -175,6 +220,23 @@ export const AdminPage = () => {
           >
             Delete Selected
           </button>
+        </div>
+      </div>
+      <div>
+        <h2>Products</h2>
+        <div>
+          {productsData && productsData.length > 0
+            ? productsData.map((product) => (
+                <ProductCardAdmin key={product.id} product={product} />
+              ))
+            : null}
+          {isProductsLoading ? <p>Loading products...</p> : null}
+          {productsError ? <p>Failed to load products.</p> : null}
+          {!isProductsLoading &&
+          !productsError &&
+          productsData?.length === 0 ? (
+            <p>No products found.</p>
+          ) : null}
         </div>
       </div>
     </>

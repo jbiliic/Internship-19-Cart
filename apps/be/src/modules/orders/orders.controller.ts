@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ParseIntPipe, Query } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { type AuthenticatedUser } from 'src/common/auth/interfaces/authenticatedUser.interface';
+import { type AuthenticatedUser } from '../../common/auth/interfaces/authenticatedUser.interface';
 import { OrderStatus, Size } from '@prisma/client';
 import { OrderProductDto } from './dto/orderProduct.dto';
-import { UserGuard } from 'src/common/auth/guards/user.guard';
-import { AdminGuard } from 'src/common/auth/guards/admin.guard';
+import { UserGuard } from '../../common/auth/guards/user.guard';
+import { AdminGuard } from '../../common/auth/guards/admin.guard';
 import { OrderDto } from './dto/order.dto';
 import { UpdateOrderStatusDto } from './dto/updateOrderStatus.dto';
 

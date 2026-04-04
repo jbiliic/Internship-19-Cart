@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { AuthenticatedUser } from 'src/common/auth/interfaces/authenticatedUser.interface';
+import { AuthenticatedUser } from '../../common/auth/interfaces/authenticatedUser.interface';
 import { use } from 'passport';
-import { UserGuard } from 'src/common/auth/guards/user.guard';
+import { UserGuard } from '../../common/auth/guards/user.guard';
 import { ProductDto } from './dto/product.dto';
 
 @ApiTags('Favorites')
