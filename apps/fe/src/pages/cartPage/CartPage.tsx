@@ -5,6 +5,8 @@ import { CartProductCard } from "../../components/cartProductCard/CartProductCar
 import { useCart } from "../../providers/cart/useCart";
 import type { Size } from "../../types/enums/size";
 import styles from "./CartPage.module.css";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../../constants/routes";
 
 interface ProductDto {
   id: number;
@@ -42,6 +44,7 @@ const formatPrice = (value: number) =>
   }).format(value)} EUR`;
 
 export const CartPage = () => {
+  const navigate = useNavigate();
   const { items, placeOrder } = useCart();
 
   const fetchCartProducts = async (
@@ -97,18 +100,6 @@ export const CartPage = () => {
     0,
   );
 
-  const handlePlaceOrder = async () => {
-    if (items.length === 0) return;
-
-    try {
-      await placeOrder();
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to place order";
-      alert(message);
-    }
-  };
-
   return (
     <div className={styles.cartPage}>
       <header className={styles.titleRow}>
@@ -157,7 +148,7 @@ export const CartPage = () => {
 
         <button
           type="button"
-          onClick={handlePlaceOrder}
+          onClick={() => navigate(routes.CHECKOUT)}
           className={styles.orderButton}
           disabled={items.length === 0 || isLoading || cartEntries.length === 0}
         >

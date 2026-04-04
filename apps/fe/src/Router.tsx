@@ -11,6 +11,7 @@ import { FavoritesPage } from "./pages/favsPage/FavoritesPage.tsx";
 import { CartPage } from "./pages/cartPage/CartPage.tsx";
 import { ProfilePage } from "./pages/profilePage/ProfilePage.tsx";
 import { AdminPage } from "./pages/adminPage/AdminPage.tsx";
+import { CheckoutPage } from "./pages/checkoutPage/CheckoutPage.tsx";
 
 export const Router = () => {
   return (
@@ -24,6 +25,7 @@ export const Router = () => {
               <Route path={routes.HOME} element={<MainPage />} />
               <Route path={routes.FAVS} element={<FavoritesPage />} />
               <Route path={routes.PROFILE} element={<ProfilePage />} />
+              <Route path={routes.CHECKOUT} element={<CheckoutPage />} />
             </Route>
             <Route path={routes.PRODUCTS} element={<SearchPage />} />
             <Route

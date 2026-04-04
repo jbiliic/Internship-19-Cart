@@ -1,0 +1,149 @@
+.page {
+  min-height: 100vh;
+  background: #efefef;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  width: min(640px, 100%);
+  background: #efefef;
+  border-left: 1px solid #878787;
+  border-right: 1px solid #878787;
+}
+
+.title {
+  margin: 0;
+  padding: 26px 20px;
+  text-align: center;
+  font-size: clamp(1.8rem, 2.6vw, 2.3rem);
+  font-weight: 800;
+  color: #111;
+}
+
+.block {
+  border-top: 1px solid #878787;
+  padding: 24px 20px 16px;
+}
+
+.blockHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.blockTitle {
+  margin: 0;
+  font-size: clamp(1rem, 2.1vw, 1.95rem);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: #121212;
+}
+
+.icon {
+  color: #15212a;
+  flex-shrink: 0;
+}
+
+.addressRowHeader {
+  margin-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.addressLabel {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.3vw, 1.9rem);
+  font-weight: 700;
+  color: #161616;
+}
+
+.changeBtn {
+  border: none;
+  border-radius: 999px;
+  background: #5a3e36;
+  color: #fff;
+  min-width: 88px;
+  padding: 7px 14px;
+  font-size: 0.66rem;
+  letter-spacing: 0.4px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.addressLines {
+  margin-top: 24px;
+}
+
+.addressLines p {
+  margin: 0 0 6px;
+  color: #545454;
+  font-size: clamp(1rem, 1.9vw, 1.45rem);
+  line-height: 1.45;
+}
+
+.pickupRow {
+  border-top: 1px solid #878787;
+  border-bottom: 1px solid #878787;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: clamp(0.96rem, 1.9vw, 1.35rem);
+  color: #121212;
+  font-weight: 700;
+}
+
+.confirmBtn {
+  width: calc(100% - 40px);
+  margin: 10px 20px 26px;
+  border: none;
+  border-radius: var(--border-radius-md);
+  background: #1e1e1e;
+  color: #fff;
+  padding: 14px;
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.errorText {
+  margin: 30px auto;
+  color: var(--color-price-red);
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .card {
+    border-left: none;
+    border-right: none;
+  }
+
+  .block,
+  .pickupRow {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .addressRowHeader {
+    margin-top: 16px;
+  }
+
+  .addressLines {
+    margin-top: 16px;
+  }
+
+  .changeBtn {
+    min-width: 82px;
+    padding: 7px 10px;
+    font-size: 0.62rem;
+  }
+
+  .confirmBtn {
+    width: calc(100% - 28px);
+    margin: 10px 14px 20px;
+  }
+}
