@@ -108,6 +108,7 @@ model Order {
   county   String
   city     String
   zipCode  Int
+  totalPrice Float       @default(0)
 
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   products  OrderProduct[]

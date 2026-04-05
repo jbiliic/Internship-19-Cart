@@ -52,13 +52,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const placeOrder = async () => {
-    const { error } = await client.post("/orders", {
-      items: items.map((item) => ({
-        productId: item.productId,
-        quantity: item.quantity,
-        selectedSize: item.selectedSize,
-      })),
-    });
+    const { error } = await client.post("/orders", items);
 
     if (error) {
       throw new Error(error);

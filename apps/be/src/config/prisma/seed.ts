@@ -148,6 +148,11 @@ async function main() {
     const orderStatuses = [OrderStatus.PENDING, OrderStatus.PROCESSING, OrderStatus.SHIPPED, OrderStatus.DELIVERED];
 
     for (let i = 0; i < 4; i++) {
+        // Izračun ukupne cijene na temelju proizvoda koji se dodaju ispod
+        const firstProductPrice = createdProducts[i].price.toNumber() * 1;
+        const secondProductPrice = createdProducts[i + 10].price.toNumber() * 2;
+        const calculatedTotal = firstProductPrice + secondProductPrice;
+
         await prisma.order.create({
             data: {
                 userId: regularUser.id,
@@ -157,6 +162,7 @@ async function main() {
                 county: regularUser.county,
                 city: regularUser.city,
                 zipCode: regularUser.zipCode,
+                totalPrice: calculatedTotal, // Dodano polje za ukupnu cijenu
                 products: {
                     create: [
                         {
@@ -164,7 +170,6 @@ async function main() {
                             quantity: 1,
                             price: createdProducts[i].price,
                             selectedSize: createdProducts[i].size[0],
-
                         },
                         {
                             productId: createdProducts[i + 10].id,

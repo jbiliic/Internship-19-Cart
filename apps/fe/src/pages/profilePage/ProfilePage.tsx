@@ -29,6 +29,7 @@ const fetchUserProfile = async () => {
 };
 
 export const ProfilePage = () => {
+  const { logout } = useAuth();
   const { isAdmin } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
@@ -75,6 +76,7 @@ export const ProfilePage = () => {
           </div>
         </div>
       )}
+      <button onClick={logout}>Log Out</button>
     </div>
   );
 };

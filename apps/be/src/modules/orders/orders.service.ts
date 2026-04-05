@@ -88,6 +88,11 @@ export class OrdersService {
             }
         }
 
+        const totalcost = items.reduce((acc, item) => {
+            const product = productsFromDb.find(p => p.id === item.productId);
+            return acc + (product!.price.toNumber() * item.quantity);
+        }, 0);
+
         const newOrder = await this.prisma.order.create({
             data: {
                 userId,
@@ -96,6 +101,7 @@ export class OrdersService {
                 county: user.county,
                 city: user.city,
                 zipCode: user.zipCode,
+                totalPrice: Number(totalcost.toFixed(2)),
                 products: {
                     create: items.map((item) => {
                         const product = productsFromDb.find(p => p.id === item.productId);
@@ -112,14 +118,9 @@ export class OrdersService {
                 products: { include: { product: true } },
             },
         });
-
-        const total = newOrder.products.reduce((acc, op) => {
-            return acc + (op.price.toNumber() * op.quantity);
-        }, 0);
-
         return {
             id: newOrder.id,
-            totalPrice: Number(total.toFixed(2)),
+            totalPrice: newOrder.totalPrice,
             status: newOrder.status,
             IBAN: newOrder.IBAN,
             address: newOrder.address,
@@ -157,13 +158,9 @@ export class OrdersService {
         }
 
         return orders.map((order) => {
-            const total = order.products.reduce((acc, op) => {
-                return acc + op.price.toNumber() * op.quantity;
-            }, 0);
-
             return {
                 id: order.id,
-                totalPrice: Number(total.toFixed(2)),
+                totalPrice: order.totalPrice,
                 status: order.status,
                 IBAN: order.IBAN,
                 address: order.address,
@@ -179,8 +176,9 @@ export class OrdersService {
                     size: op.selectedSize,
                     quantity: op.quantity,
                 })),
-            };
-        });
+            }
+        }
+        );
     }
 
     async changeOrderStatus(orderId: number, status: OrderStatus) {
