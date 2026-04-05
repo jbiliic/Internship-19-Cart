@@ -4,9 +4,9 @@ services:
     container_name: dom19_db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: cart_db
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-cart_db}
     ports:
       - "5433:5432"
     volumes:
@@ -32,7 +32,7 @@ services:
       PORT: 3000
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       CORS_ORIGIN: http://localhost:5173
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/cart_db?schema=public
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - "3000:3000"
 
